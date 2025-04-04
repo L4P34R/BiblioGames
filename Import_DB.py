@@ -36,33 +36,33 @@ ratings = pd.read_csv("ratings.csv")
 merged = pd.merge(details, ratings, how='left', left_on='id', right_on='id')
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Artist (
+CREATE TABLE IF NOT EXISTS Artist (
   ID INT PRIMARY KEY,
   Name VARCHAR(100)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Belong (
+CREATE TABLE IF NOT EXISTS Belong (
   GameID INT NOT NULL,
   CategoryID INT NOT NULL,
   PRIMARY KEY (GameID, CategoryID)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE BelongFamily (
+CREATE TABLE IF NOT EXISTS BelongFamily (
   GameID INT NOT NULL,
   FamillyID INT NOT NULL,
   PRIMARY KEY (GameID, FamillyID)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Category (
+CREATE TABLE IF NOT EXISTS Category (
   ID INT PRIMARY KEY,
   Name VARCHAR(40)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Create_ (
+CREATE TABLE IF NOT EXISTS Create_ (
   GameID INT NOT NULL,
   DesignerID INT NOT NULL,
   PRIMARY KEY (GameID, DesignerID),
@@ -71,19 +71,19 @@ CREATE IF NOT EXIST TABLE Create_ (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Designer (
+CREATE TABLE IF NOT EXISTS Designer (
   ID INT PRIMARY KEY,
   Name VARCHAR(50)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Expansion (
+CREATE TABLE IF NOT EXISTS Expansion (
   ID INT PRIMARY KEY,
   Name VARCHAR(200)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Extend (
+CREATE TABLE IF NOT EXISTS Extend (
   GameID INT NOT NULL,
   ExpansionID INT NOT NULL,
   PRIMARY KEY (GameID, ExpansionID),
@@ -92,13 +92,13 @@ CREATE IF NOT EXIST TABLE Extend (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Familly (
+CREATE TABLE IF NOT EXISTS Familly (
   ID INT PRIMARY KEY,
   Name VARCHAR(80)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Game (
+CREATE TABLE IF NOT EXISTS Game (
   ID INT PRIMARY KEY,
   Name VARCHAR(150) NOT NULL,
   Description LONGTEXT,
@@ -119,7 +119,7 @@ CREATE IF NOT EXIST TABLE Game (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE GameOffer (
+CREATE TABLE IF NOT EXISTS GameOffer (
   GameID INT NOT NULL,
   UserID INT NOT NULL,
   OfferID INT NOT NULL,
@@ -134,7 +134,7 @@ CREATE IF NOT EXIST TABLE GameOffer (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Illustrate (
+CREATE TABLE IF NOT EXISTS Illustrate (
   GameID INT NOT NULL,
   ArtistID INT NOT NULL,
   PRIMARY KEY (GameID, ArtistID),
@@ -143,7 +143,7 @@ CREATE IF NOT EXIST TABLE Illustrate (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Implement (
+CREATE TABLE IF NOT EXISTS Implement (
   GameID INT NOT NULL,
   ImplementationID INT NOT NULL,
   PRIMARY KEY (GameID, ImplementationID),
@@ -152,19 +152,19 @@ CREATE IF NOT EXIST TABLE Implement (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Implementation (
+CREATE TABLE IF NOT EXISTS Implementation (
   ID INT PRIMARY KEY,
   Name VARCHAR(150)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Mechanic (
+CREATE TABLE IF NOT EXISTS Mechanic (
   ID INT PRIMARY KEY,
   Name VARCHAR(50)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Publish (
+CREATE TABLE IF NOT EXISTS Publish (
   GameID INT NOT NULL,
   PublisherID INT NOT NULL,
   PRIMARY KEY (GameID, PublisherID),
@@ -173,13 +173,13 @@ CREATE IF NOT EXIST TABLE Publish (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Publisher (
+CREATE TABLE IF NOT EXISTS Publisher (
   ID INT PRIMARY KEY,
   Name VARCHAR(150)
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Rating (
+CREATE TABLE IF NOT EXISTS Rating (
   GameID INT NOT NULL,
   UserID INT NOT NULL,
   Note DECIMAL(2,1) NOT NULL,
@@ -190,7 +190,7 @@ CREATE IF NOT EXIST TABLE Rating (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE User_ (
+CREATE TABLE IF NOT EXISTS User_ (
   ID INT PRIMARY KEY,
   UserName VARCHAR(50) NOT NULL UNIQUE,
   Password VARCHAR(50) NOT NULL,
@@ -203,7 +203,7 @@ CREATE IF NOT EXIST TABLE User_ (
 );""")
 
 cursor.execute(f"""
-CREATE IF NOT EXIST TABLE Use_ (
+CREATE TABLE IF NOT EXISTS Use_ (
   GameID INT NOT NULL,
   MechanicID INT NOT NULL,
   PRIMARY KEY (GameID, MechanicID),
@@ -245,114 +245,115 @@ for _, row in merged.iterrows():
     random_price = random.randint(10, 100) - centimes/10
 
     # Insertion dans la table game
-    cursor.execute("""
-        INSERT IGNORE INTO game (ID, name, description, year_, minplayer, maxplayer, playtime, minplaytime, maxplaytime, minage, trading, wishing, average, nbrates, imageurl, bggurl, price)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """, (game_id, name, desc, year, minp, maxp, pt, minpt, maxpt, minage, trading, wishing, average, nbRates, imgURL, BGGUrl, random_price))
+    if not cursor.execute("SELECT 1 FROM game WHERE ID = %s", (game_id,)).fetchone():
+      cursor.execute("""
+          INSERT IGNORE INTO game (ID, name, description, year_, minplayer, maxplayer, playtime, minplaytime, maxplaytime, minage, trading, wishing, average, nbrates, imageurl, bggurl, price)
+          VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+      """, (game_id, name, desc, year, minp, maxp, pt, minpt, maxpt, minage, trading, wishing, average, nbRates, imgURL, BGGUrl, random_price))
 
-    # Insertion dans la table designer
-    if pd.notna(row['boardgamedesigner']):
-        for dev in extract_list(row.get('boardgamedesigner', '[]')):
-            cursor.execute("INSERT IGNORE INTO designer (name) VALUES (%s)", (dev,))
-            cursor.execute("SELECT ID FROM designer WHERE name = %s", (dev,))
-            result = cursor.fetchone()
-            if result:
-                designer_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM create_ WHERE GameID = %s AND DesignerID = %s", (game_id, designer_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO create_ (GameID, DesignerID) VALUES (%s, %s)", (game_id, designer_id))
-    
-    # Insertion dans la table artist
-    if pd.notna(row['boardgameartist']):
-        for artist in extract_list(row.get('boardgameartist', '[]')):
-            cursor.execute("INSERT IGNORE INTO artist (name) VALUES (%s)", (artist,))
-            cursor.execute("SELECT ID FROM artist WHERE name = %s", (artist,))
-            result = cursor.fetchone()
-            if result:
-                artist_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM illustrate WHERE GameID = %s AND artistid = %s", (game_id, artist_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO illustrate (GameID, artistid) VALUES (%s, %s)", (game_id, artist_id))
-    
-    # Insertion dans la table publisher
-    if pd.notna(row['boardgamepublisher']):
-        for pub in extract_list(row.get('boardgamepublisher', '[]')):
-            cursor.execute("INSERT IGNORE INTO publisher (name) VALUES (%s)", (pub,))
-            cursor.execute("SELECT ID FROM publisher WHERE name = %s", (pub,))
-            result = cursor.fetchone()
-            if result:
-                publisher_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM publish WHERE GameID = %s AND publisherid = %s", (game_id, publisher_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO publish (GameID, publisherid) VALUES (%s, %s)", (game_id, publisher_id))
-    
-    # Insertion dans la table mechanic
-    if pd.notna(row['boardgamemechanic']):
-        for mec in extract_list(row.get('boardgamemechanic', '[]')):
-            cursor.execute("INSERT IGNORE INTO Mechanic (name) VALUES (%s)", (mec,))
-            cursor.execute("SELECT ID FROM Mechanic WHERE name = %s", (mec,))
-            result = cursor.fetchone()
-            if result:
-                mec_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM Use_ WHERE GameID = %s AND mechanicid = %s", (game_id, mec_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO Use_ (GameID, mechanicid) VALUES (%s, %s)", (game_id, mec_id))
-    
-    # Insertion dans la table expansion
-    if pd.notna(row['boardgameexpansion']):
-        for exp in extract_list(row.get('boardgameexpansion', '[]')):
-            cursor.execute("INSERT IGNORE INTO expansion (name) VALUES (%s)", (exp,))
-            cursor.execute("SELECT ID FROM expansion WHERE name = %s", (exp,))
-            result = cursor.fetchone()
-            if result:
-                exp_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM extend WHERE GameID = %s AND expansionid = %s", (game_id, exp_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO extend (GameID, expansionid) VALUES (%s, %s)", (game_id, exp_id))
-    
-    # Insertion dans la table category
-    if pd.notna(row['boardgamecategory']):
-        for cat in extract_list(row.get('boardgamecategory', '[]')):
-            cursor.execute("INSERT IGNORE INTO category (name) VALUES (%s)", (cat,))
-            cursor.execute("SELECT ID FROM category WHERE name = %s", (cat,))
-            result = cursor.fetchone()
-            if result:
-                cat_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM belong WHERE GameID = %s AND CategoryID = %s", (game_id, cat_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO belong (GameID, CategoryID) VALUES (%s, %s)", (game_id, cat_id))
-    
-    # Insertion dans la table family
-    if pd.notna(row['boardgamefamily']):
-        for fam in extract_list(row.get('boardgamefamily', '[]')):
-            cursor.execute("INSERT IGNORE INTO familly (name) VALUES (%s)", (fam,))
-            cursor.execute("SELECT ID FROM familly WHERE name = %s", (fam,))
-            result = cursor.fetchone()
-            if result:
-                fam_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM belongfamily WHERE GameID = %s AND FamillyID = %s", (game_id, fam_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO belongfamily (GameID, FamillyID) VALUES (%s, %s)", (game_id, fam_id))
-    
-    # Insertion dans la table implementation
-    if pd.notna(row['boardgameimplementation']):
-        for impl in extract_list(row.get('boardgameimplementation', '[]')):
-            cursor.execute("INSERT IGNORE INTO implementation (name) VALUES (%s)", (impl,))
-            cursor.execute("SELECT ID FROM implementation WHERE name = %s", (impl,))
-            result = cursor.fetchone()
-            if result:
-                impl_id = result[0]
-                # Vérification avant insertion dans la table de liaison
-                cursor.execute("SELECT 1 FROM implement WHERE GameID = %s AND ImplementationID = %s", (game_id, impl_id))
-                if not cursor.fetchone():
-                    cursor.execute("INSERT IGNORE INTO implement (GameID, ImplementationID) VALUES (%s, %s)", (game_id, impl_id))
+      # Insertion dans la table designer
+      if pd.notna(row['boardgamedesigner']):
+          for dev in extract_list(row.get('boardgamedesigner', '[]')):
+              cursor.execute("INSERT IGNORE INTO designer (name) VALUES (%s)", (dev,))
+              cursor.execute("SELECT ID FROM designer WHERE name = %s", (dev,))
+              result = cursor.fetchone()
+              if result:
+                  designer_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM create_ WHERE GameID = %s AND DesignerID = %s", (game_id, designer_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO create_ (GameID, DesignerID) VALUES (%s, %s)", (game_id, designer_id))
+      
+      # Insertion dans la table artist
+      if pd.notna(row['boardgameartist']):
+          for artist in extract_list(row.get('boardgameartist', '[]')):
+              cursor.execute("INSERT IGNORE INTO artist (name) VALUES (%s)", (artist,))
+              cursor.execute("SELECT ID FROM artist WHERE name = %s", (artist,))
+              result = cursor.fetchone()
+              if result:
+                  artist_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM illustrate WHERE GameID = %s AND artistid = %s", (game_id, artist_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO illustrate (GameID, artistid) VALUES (%s, %s)", (game_id, artist_id))
+      
+      # Insertion dans la table publisher
+      if pd.notna(row['boardgamepublisher']):
+          for pub in extract_list(row.get('boardgamepublisher', '[]')):
+              cursor.execute("INSERT IGNORE INTO publisher (name) VALUES (%s)", (pub,))
+              cursor.execute("SELECT ID FROM publisher WHERE name = %s", (pub,))
+              result = cursor.fetchone()
+              if result:
+                  publisher_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM publish WHERE GameID = %s AND publisherid = %s", (game_id, publisher_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO publish (GameID, publisherid) VALUES (%s, %s)", (game_id, publisher_id))
+      
+      # Insertion dans la table mechanic
+      if pd.notna(row['boardgamemechanic']):
+          for mec in extract_list(row.get('boardgamemechanic', '[]')):
+              cursor.execute("INSERT IGNORE INTO Mechanic (name) VALUES (%s)", (mec,))
+              cursor.execute("SELECT ID FROM Mechanic WHERE name = %s", (mec,))
+              result = cursor.fetchone()
+              if result:
+                  mec_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM Use_ WHERE GameID = %s AND mechanicid = %s", (game_id, mec_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO Use_ (GameID, mechanicid) VALUES (%s, %s)", (game_id, mec_id))
+      
+      # Insertion dans la table expansion
+      if pd.notna(row['boardgameexpansion']):
+          for exp in extract_list(row.get('boardgameexpansion', '[]')):
+              cursor.execute("INSERT IGNORE INTO expansion (name) VALUES (%s)", (exp,))
+              cursor.execute("SELECT ID FROM expansion WHERE name = %s", (exp,))
+              result = cursor.fetchone()
+              if result:
+                  exp_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM extend WHERE GameID = %s AND expansionid = %s", (game_id, exp_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO extend (GameID, expansionid) VALUES (%s, %s)", (game_id, exp_id))
+      
+      # Insertion dans la table category
+      if pd.notna(row['boardgamecategory']):
+          for cat in extract_list(row.get('boardgamecategory', '[]')):
+              cursor.execute("INSERT IGNORE INTO category (name) VALUES (%s)", (cat,))
+              cursor.execute("SELECT ID FROM category WHERE name = %s", (cat,))
+              result = cursor.fetchone()
+              if result:
+                  cat_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM belong WHERE GameID = %s AND CategoryID = %s", (game_id, cat_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO belong (GameID, CategoryID) VALUES (%s, %s)", (game_id, cat_id))
+      
+      # Insertion dans la table family
+      if pd.notna(row['boardgamefamily']):
+          for fam in extract_list(row.get('boardgamefamily', '[]')):
+              cursor.execute("INSERT IGNORE INTO familly (name) VALUES (%s)", (fam,))
+              cursor.execute("SELECT ID FROM familly WHERE name = %s", (fam,))
+              result = cursor.fetchone()
+              if result:
+                  fam_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM belongfamily WHERE GameID = %s AND FamillyID = %s", (game_id, fam_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO belongfamily (GameID, FamillyID) VALUES (%s, %s)", (game_id, fam_id))
+      
+      # Insertion dans la table implementation
+      if pd.notna(row['boardgameimplementation']):
+          for impl in extract_list(row.get('boardgameimplementation', '[]')):
+              cursor.execute("INSERT IGNORE INTO implementation (name) VALUES (%s)", (impl,))
+              cursor.execute("SELECT ID FROM implementation WHERE name = %s", (impl,))
+              result = cursor.fetchone()
+              if result:
+                  impl_id = result[0]
+                  # Vérification avant insertion dans la table de liaison
+                  cursor.execute("SELECT 1 FROM implement WHERE GameID = %s AND ImplementationID = %s", (game_id, impl_id))
+                  if not cursor.fetchone():
+                      cursor.execute("INSERT IGNORE INTO implement (GameID, ImplementationID) VALUES (%s, %s)", (game_id, impl_id))
 
 cnx.commit()
 cursor.close()
