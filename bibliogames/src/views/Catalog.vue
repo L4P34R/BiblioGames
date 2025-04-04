@@ -28,7 +28,7 @@ export default {
     methods: {
     async getAllGames() {
             try{
-                const response = await axios.get('http://localhost:5000/games');
+                const response = await axios.get('http://localhost:5000/games')
                 this.games = response.data;
                 console.log('Games fetched successfully:');
             }
