@@ -42,27 +42,27 @@ CREATE IF NOT EXIST TABLE Artist (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Belong (
+CREATE IF NOT EXIST TABLE Belong (
   GameID INT NOT NULL,
   CategoryID INT NOT NULL,
   PRIMARY KEY (GameID, CategoryID)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE BelongFamily (
+CREATE IF NOT EXIST TABLE BelongFamily (
   GameID INT NOT NULL,
   FamillyID INT NOT NULL,
   PRIMARY KEY (GameID, FamillyID)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Category (
+CREATE IF NOT EXIST TABLE Category (
   ID INT PRIMARY KEY,
   Name VARCHAR(40)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Create_ (
+CREATE IF NOT EXIST TABLE Create_ (
   GameID INT NOT NULL,
   DesignerID INT NOT NULL,
   PRIMARY KEY (GameID, DesignerID),
@@ -71,19 +71,19 @@ CREATE TABLE Create_ (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Designer (
+CREATE IF NOT EXIST TABLE Designer (
   ID INT PRIMARY KEY,
   Name VARCHAR(50)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Expansion (
+CREATE IF NOT EXIST TABLE Expansion (
   ID INT PRIMARY KEY,
   Name VARCHAR(200)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Extend (
+CREATE IF NOT EXIST TABLE Extend (
   GameID INT NOT NULL,
   ExpansionID INT NOT NULL,
   PRIMARY KEY (GameID, ExpansionID),
@@ -92,13 +92,13 @@ CREATE TABLE Extend (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Familly (
+CREATE IF NOT EXIST TABLE Familly (
   ID INT PRIMARY KEY,
   Name VARCHAR(80)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Game (
+CREATE IF NOT EXIST TABLE Game (
   ID INT PRIMARY KEY,
   Name VARCHAR(150) NOT NULL,
   Description LONGTEXT,
@@ -119,7 +119,7 @@ CREATE TABLE Game (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE GameOffer (
+CREATE IF NOT EXIST TABLE GameOffer (
   GameID INT NOT NULL,
   UserID INT NOT NULL,
   OfferID INT NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE GameOffer (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Illustrate (
+CREATE IF NOT EXIST TABLE Illustrate (
   GameID INT NOT NULL,
   ArtistID INT NOT NULL,
   PRIMARY KEY (GameID, ArtistID),
@@ -143,7 +143,7 @@ CREATE TABLE Illustrate (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Implement (
+CREATE IF NOT EXIST TABLE Implement (
   GameID INT NOT NULL,
   ImplementationID INT NOT NULL,
   PRIMARY KEY (GameID, ImplementationID),
@@ -152,19 +152,19 @@ CREATE TABLE Implement (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Implementation (
+CREATE IF NOT EXIST TABLE Implementation (
   ID INT PRIMARY KEY,
   Name VARCHAR(150)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Mechanic (
+CREATE IF NOT EXIST TABLE Mechanic (
   ID INT PRIMARY KEY,
   Name VARCHAR(50)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Publish (
+CREATE IF NOT EXIST TABLE Publish (
   GameID INT NOT NULL,
   PublisherID INT NOT NULL,
   PRIMARY KEY (GameID, PublisherID),
@@ -173,13 +173,13 @@ CREATE TABLE Publish (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Publisher (
+CREATE IF NOT EXIST TABLE Publisher (
   ID INT PRIMARY KEY,
   Name VARCHAR(150)
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Rating (
+CREATE IF NOT EXIST TABLE Rating (
   GameID INT NOT NULL,
   UserID INT NOT NULL,
   Note DECIMAL(2,1) NOT NULL,
@@ -190,7 +190,7 @@ CREATE TABLE Rating (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE User_ (
+CREATE IF NOT EXIST TABLE User_ (
   ID INT PRIMARY KEY,
   UserName VARCHAR(50) NOT NULL UNIQUE,
   Password VARCHAR(50) NOT NULL,
@@ -203,7 +203,7 @@ CREATE TABLE User_ (
 );""")
 
 cursor.execute(f"""
-CREATE TABLE Use_ (
+CREATE IF NOT EXIST TABLE Use_ (
   GameID INT NOT NULL,
   MechanicID INT NOT NULL,
   PRIMARY KEY (GameID, MechanicID),
