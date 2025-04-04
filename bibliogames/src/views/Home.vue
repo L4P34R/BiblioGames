@@ -9,7 +9,7 @@
       </div>
     </section>
     <div class="hero-img">
-        <img src="https://via.placeholder.com/800x400" alt="Image Placeholder" />
+        <img loading="lazy" src="@/assets/HomeImage.png" alt="Home Image" />
     </div>
 
     <section class="reviews text">
@@ -111,10 +111,11 @@ export default {
 
     .hero-img {
     background-color: #e5e5e5;
-    height: 200px;
+    height: 30vw;
     margin: 0;
     width: 100%;
     margin-top: 1rem;
+    overflow: hidden;
     }
 
     .reviews {

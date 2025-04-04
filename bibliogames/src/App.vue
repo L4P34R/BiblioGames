@@ -31,7 +31,7 @@ export default {
     },
     toggleConnection() {
       this.connected = !this.connected;
-    }
+    },
   },
   mounted() {
   }

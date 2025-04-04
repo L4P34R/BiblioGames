@@ -1,5 +1,11 @@
 import express from 'express';
-import { showAllGames, showGameById, addGame, modifyGame, removeGame } from '../controllers/Games.js';
+import {
+    showAllGames,
+    showGameById,
+    addGame,
+    modifyGame,
+    removeGame
+} from '../controllers/Games.js';
 
 const router = express.Router();
 

@@ -4,11 +4,11 @@
     <div class="header-right">
         <nav>
         <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Catalog</a></li>
-            <li><a href="#">Reviews</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#" @click="openCart">Cart</a></li>
+            <li><router-link to="/">Home</router-link></li>
+            <li><router-link to="/catalog">Catalog</router-link></li>
+            <li><router-link to="/Reviews">Reviews</router-link></li>
+            <li><router-link to="/about">About</router-link></li>
+            <li><a @click="openCart">Cart</a></li>
         </ul>
         </nav>
         <ul id="profilinterface">
@@ -24,7 +24,10 @@
 <script>
 export default {
     name: 'Header',
-    data() {
+    data(){
+        return {
+            connected: false
+        }
     },
     methods: {
         toggleConnection() {
@@ -81,6 +84,7 @@ nav ul li a {
 
 nav ul li a:hover {
     background-color: #333;
+    cursor: pointer;
 }
 
 .header-right > ul {
