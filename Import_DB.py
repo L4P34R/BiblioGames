@@ -36,59 +36,68 @@ ratings = pd.read_csv("ratings.csv")
 merged = pd.merge(details, ratings, how='left', left_on='id', right_on='id')
 
 cursor.execute(f"""
-CREATE TABLE Artist (
+CREATE IF NOT EXIST TABLE Artist (
   ID INT PRIMARY KEY,
   Name VARCHAR(100)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Belong (
   GameID INT NOT NULL,
   CategoryID INT NOT NULL,
   PRIMARY KEY (GameID, CategoryID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE BelongFamily (
   GameID INT NOT NULL,
   FamillyID INT NOT NULL,
   PRIMARY KEY (GameID, FamillyID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Category (
   ID INT PRIMARY KEY,
   Name VARCHAR(40)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Create_ (
   GameID INT NOT NULL,
   DesignerID INT NOT NULL,
   PRIMARY KEY (GameID, DesignerID),
   FOREIGN KEY (GameID) REFERENCES Game(ID),
   FOREIGN KEY (DesignerID) REFERENCES Designer(ID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Designer (
   ID INT PRIMARY KEY,
   Name VARCHAR(50)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Expansion (
   ID INT PRIMARY KEY,
   Name VARCHAR(200)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Extend (
   GameID INT NOT NULL,
   ExpansionID INT NOT NULL,
   PRIMARY KEY (GameID, ExpansionID),
   FOREIGN KEY (GameID) REFERENCES Game(ID),
   FOREIGN KEY (ExpansionID) REFERENCES Expansion(ID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Familly (
   ID INT PRIMARY KEY,
   Name VARCHAR(80)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Game (
   ID INT PRIMARY KEY,
   Name VARCHAR(150) NOT NULL,
@@ -107,8 +116,9 @@ CREATE TABLE Game (
   ImageUrl VARCHAR(200),
   BGGUrl VARCHAR(100),
   Price FLOAT
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE GameOffer (
   GameID INT NOT NULL,
   UserID INT NOT NULL,
@@ -121,47 +131,54 @@ CREATE TABLE GameOffer (
   UNIQUE (OfferID),
   FOREIGN KEY (GameID) REFERENCES Game(ID),
   FOREIGN KEY (UserID) REFERENCES User_(ID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Illustrate (
   GameID INT NOT NULL,
   ArtistID INT NOT NULL,
   PRIMARY KEY (GameID, ArtistID),
   FOREIGN KEY (GameID) REFERENCES Game(ID),
   FOREIGN KEY (ArtistID) REFERENCES Artist(ID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Implement (
   GameID INT NOT NULL,
   ImplementationID INT NOT NULL,
   PRIMARY KEY (GameID, ImplementationID),
   FOREIGN KEY (GameID) REFERENCES Game(ID),
   FOREIGN KEY (ImplementationID) REFERENCES Implementation(ID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Implementation (
   ID INT PRIMARY KEY,
   Name VARCHAR(150)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Mechanic (
   ID INT PRIMARY KEY,
   Name VARCHAR(50)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Publish (
   GameID INT NOT NULL,
   PublisherID INT NOT NULL,
   PRIMARY KEY (GameID, PublisherID),
   FOREIGN KEY (GameID) REFERENCES Game(ID),
   FOREIGN KEY (PublisherID) REFERENCES Publisher(ID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Publisher (
   ID INT PRIMARY KEY,
   Name VARCHAR(150)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Rating (
   GameID INT NOT NULL,
   UserID INT NOT NULL,
@@ -170,8 +187,9 @@ CREATE TABLE Rating (
   PRIMARY KEY (GameID, UserID),
   FOREIGN KEY (GameID) REFERENCES Game(ID),
   FOREIGN KEY (UserID) REFERENCES User_(ID)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE User_ (
   ID INT PRIMARY KEY,
   UserName VARCHAR(50) NOT NULL UNIQUE,
@@ -182,8 +200,9 @@ CREATE TABLE User_ (
   AccountCreationDate DATE NOT NULL,
   Admin BOOLEAN NOT NULL,
   Color VARCHAR(50)
-);
+);""")
 
+cursor.execute(f"""
 CREATE TABLE Use_ (
   GameID INT NOT NULL,
   MechanicID INT NOT NULL,
