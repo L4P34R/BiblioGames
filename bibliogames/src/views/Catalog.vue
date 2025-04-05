@@ -6,8 +6,16 @@
     </section>
 
     <section class="game-list">
-        <gamecard v-for="game in games" :key="game.id" game="game"/>
+        <gamecard v-for="game in games"
+        :key="game.id"
+        :game="game"
+        @add-to-cart="addToCart"
+        />
     </section>
+    <div class = NavButons>
+        <button @click="Page--" :disabled="Page <= 1">Previous</button>
+        <button @click="Page++" :disabled="games.length < numberOfGames">Next</button>
+    </div>
   </div>
 </template>
 
@@ -22,23 +30,36 @@ export default {
     },
   data() {
     return {
-      games: [],
+        games: [],
+        numberOfGames: 20,
+        Page: 1,
+        sort: 'average',
+        order: 'DESC',
     };
   },
     methods: {
-    async getAllGames() {
+    async getXGames() {
             try{
-                const response = await axios.get('http://localhost:5000/games')
+                const response =await axios.get('http://localhost:5001/gamesLimited', {
+                params: {
+                    x: this.numberOfGames, // Nombre de jeux par page
+                    page: this.Page, // Numéro de la page
+                    sort: this.sort, // Colonne de tri
+                    order: this.order, // Ordre de tri
+                },
+            });
                 this.games = response.data;
-                console.log('Games fetched successfully:');
             }
             catch (error) {
                 console.error('Error fetching games:', error);
             }
         },
+    addToCart(game) {
+            this.$emit('add-to-cart', game);
+        },
     },
     created() {
-        this.getAllGames();
+        this.getXGames();
     },
 };
 </script>
@@ -66,9 +87,9 @@ export default {
 }
 
 .game-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 1.5rem;
 }
 
 </style>

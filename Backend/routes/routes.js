@@ -4,7 +4,8 @@ import {
     showGameById,
     addGame,
     modifyGame,
-    removeGame
+    removeGame,
+    ShowXGames
 } from '../controllers/Games.js';
 
 const router = express.Router();
@@ -14,5 +15,6 @@ router.get('/games/:id', showGameById);
 router.post('/games', addGame);
 router.put('/games/:id', modifyGame);
 router.delete('/games/:id', removeGame);
+router.get('/gamesLimited', ShowXGames);
 
 export default router;

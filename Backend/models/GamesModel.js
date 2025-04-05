@@ -95,3 +95,29 @@ export const updateGameById = (data, result)=>{
     });
 }
 
+export const getXGames = (x, offset, sort, order, result) => {
+    // Valider les entrées pour éviter les injections SQL
+    const validSortColumns = ['id', 'name', 'average', 'year_']; // Liste des colonnes autorisées
+    const validOrder = ['ASC', 'DESC']; // Ordres autorisés
+
+    // Vérifier si les colonnes et l'ordre sont valides
+    if (!validSortColumns.includes(sort)) {
+        sort = 'id'; // Colonne par défaut
+    }
+    if (!validOrder.includes(order.toUpperCase())) {
+        order = 'ASC'; // Ordre par défaut
+    }
+
+    // Construire la requête SQL avec des valeurs sécurisées
+    const query = `SELECT * FROM Game ORDER BY ${sort} ${order} LIMIT ? OFFSET ?`;
+
+    // Exécuter la requête
+    db.query(query, [x, offset], (err, results) => {
+        if (err) {
+            console.log('Erreur dans getXGames:', err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+};

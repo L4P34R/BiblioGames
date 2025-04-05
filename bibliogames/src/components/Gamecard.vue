@@ -1,12 +1,15 @@
 <template>
   <div class="game-card">
-        <img :src="game.URL" :alt="game.name" class="game-image" />
+        <div class = "game-image-container">
+            <img :src="game.ImageUrl" :alt="game.Name" class="game-image" />
+        </div>
         <div class="game-info">
-          <h3>{{ game.name }}</h3>
-          <p>{{ game.price }}</p>
+          <h3>{{ game.Name }}</h3>
+          <p>{{ game.Price }} €</p>
+          <p v-if="game.Average">{{ game.Average }} / 5</p>
           <div class="buttons">
             <button class="btn">View Details</button>
-            <button class="btn secondary">Add to Cart</button>
+            <button @click="addToCart()" class="btn secondary">Add to Cart</button>
           </div>
       </div>
     </div>
@@ -26,6 +29,9 @@ export default {
         };
     },
     methods: {
+        addToCart() {
+            this.$emit('add-to-cart', this.game);
+        },
     },
 
 }
@@ -39,31 +45,52 @@ export default {
   border-radius: 8px;
   overflow: hidden;
   text-align: center;
-  padding: 1rem;
+  padding: .5rem;
   width: 20rem;
-  height: 15rem;
+  display: flex; /* Active Flexbox */
+  flex-direction: column; /* Aligne les éléments verticalement */
+}
+
+.game-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  aspect-ratio: 100 / 145; /* Maintient le ratio 100:145 */
+  border-radius: 5px;
+  margin: 0 auto 1rem auto;
+  overflow: hidden; /* Cache les parties débordantes */
 }
 
 .game-image {
-  width: 100%;
-  height: auto;
-  border-bottom: 1px solid #444;
-  margin-bottom: 1rem;
+    width: 100%;
+  object-fit: contain;
+}
+
+.game-info {
+  margin-top: 1rem; /* Ajoute un espace entre l'image et les infos */
+  border-top: 1px solid #444;
+  flex-grow: 1; /* Permet à cette section de prendre tout l'espace disponible */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .game-info h3 {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.1rem;
+  display: block;
 }
 
 .game-info p {
   font-size: 1rem;
   color: #ccc;
-  margin-bottom: 1rem;
+  margin-bottom: 0.2rem;
 }
 .buttons {
   display: flex;
   justify-content: space-between;
+  margin: 0 1rem;
 }
 
 .btn {
