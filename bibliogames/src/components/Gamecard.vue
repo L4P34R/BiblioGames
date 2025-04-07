@@ -1,7 +1,7 @@
 <template>
   <div class="game-card">
         <div class = "game-image-container">
-            <img :src="game.ImageUrl" :alt="game.Name" class="game-image" />
+            <img loading="lazy" :src="game.ImageUrl" :alt="game.Name" class="game-image" />
         </div>
         <div class="game-info">
           <h3>{{ game.Name }}</h3>
@@ -40,7 +40,7 @@ export default {
 <style scoped>
 
 .game-card {
-  background-color: #303030;
+  background-color: #242424;
   border: 1px solid #444;
   border-radius: 8px;
   overflow: hidden;
