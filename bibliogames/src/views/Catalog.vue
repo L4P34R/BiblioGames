@@ -6,15 +6,16 @@
     </section>
 
     <section class="game-list">
-        <gamecard v-for="game in games"
-        :key="game.id"
-        :game="game"
-        @add-to-cart="addToCart"
+        <gamecard 
+            v-for="game in games.find(g => g.Page === Page)?.data" 
+            :key="game.id" 
+            :game="game" 
+            @add-to-cart="addToCart" 
         />
     </section>
     <div class = NavButons>
-        <button @click="Page--" :disabled="Page <= 1">Previous</button>
-        <button @click="Page++" :disabled="games.length < numberOfGames">Next</button>
+        <button @click="prevPage()" :disabled="Page <= 1">Previous</button>
+        <button @click="nextPage()" :disabled="games*numberOfGames < totalGames">Next</button>
     </div>
   </div>
 </template>
@@ -33,32 +34,69 @@ export default {
         games: [],
         numberOfGames: 20,
         Page: 1,
+        totalGames: 0,
         sort: 'average',
-        order: 'DESC',
+        order: 'ASC',
+        maxPage: 1,
     };
   },
     methods: {
     async getXGames() {
-            try{
-                const response =await axios.get('http://localhost:5001/gamesLimited', {
-                params: {
-                    x: this.numberOfGames, // Nombre de jeux par page
-                    page: this.Page, // Numéro de la page
-                    sort: this.sort, // Colonne de tri
-                    order: this.order, // Ordre de tri
-                },
-            });
-                this.games = response.data;
+            if (!this.games.find(g => g.Page === this.Page)){
+                try{
+                    const response = await axios.get('http://localhost:5001/gamesLimited', {
+                    params: {
+                        x: this.numberOfGames, // Nombre de jeux par page
+                        page: this.Page, // Numéro de la page
+                        sort: this.sort, // Colonne de tri
+                        order: this.order, // Ordre de tri
+                    },
+                });
+                const fetchedGames = {
+                    Page: this.Page,
+                    data: response.data,
+                }
+                    this.games.push(fetchedGames);
+                    console.log(`page ${this.Page} fetched successefully.`)
+                    this.storeGames();
+                }
+                catch (error) {
+                    console.error(`Error fetching page ${this.Page}:`, error);
+                }
             }
-            catch (error) {
-                console.error('Error fetching games:', error);
+            else{
+                console.log(`page ${this.Page} already fetched.`)
             }
         },
+    async getNbGames() {
+        try {
+            const response = await axios.get('http://localhost:5001/gamesCount');
+            this.totalGames = parseInt(response.data, 10); // Utilisation correcte de parseInt avec la base 10
+            this.maxPage = Math.ceil(this.totalGames / this.numberOfGames); // Calcul du nombre total de pages
+            console.log(`Total games: ${this.totalGames}, Max pages: ${this.maxPage}`);
+        } catch (error) {
+            console.error('Error fetching total number of games:', error);
+        }
+    },
+    async storeGames(){
+        localStorage.setItem('games', JSON.stringify(this.games));
+        console.log('Games stored in localStorage:', this.games);
+    },
+    nextPage(){
+        this.Page++;
+        this.getXGames();
+    },
+    prevPage(){
+        this.Page--;
+        this.getXGames();
+    },
     addToCart(game) {
             this.$emit('add-to-cart', game);
         },
     },
     created() {
+        this.getNbGames();
+        this.games = JSON.parse(localStorage.getItem('games')) || [];
         this.getXGames();
     },
 };

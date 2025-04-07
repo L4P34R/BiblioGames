@@ -33,7 +33,7 @@ export const insertGame = (data, result) => {
             const id = results[0].maxId + 1;
             db.query(
                 `INSERT INTO Game 
-                (ID, Name, Description, Year_, MinPlayer, MaxPlayer, PlayTime, MinPlaytime, MaxPlaytime, MinAge, Trading, Whishing, Average, NBRates, ImageURL, BGGURL, Price) 
+                (ID, Name, Description, Year_, MinPlayer, MaxPlayer, PlayTime, MinPlaytime, MaxPlaytime, MinAge, Trading, Whising, Average, NBRates, ImageURL, BGGURL, Price) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     id,
@@ -118,6 +118,19 @@ export const getXGames = (x, offset, sort, order, result) => {
             result(err, null);
         } else {
             result(null, results);
+        }
+    });
+};
+
+export const getNbGames = (result) => {
+    // Requête SQL pour compter le nombre total de jeux
+    db.query("SELECT COUNT(*) AS total FROM Game", (err, results) => {
+        if (err) {
+            console.error("Erreur dans getNbGames:", err);
+            result(err, null);
+        } else {
+            // Retourner le total des jeux
+            result(null, results[0].total);
         }
     });
 };

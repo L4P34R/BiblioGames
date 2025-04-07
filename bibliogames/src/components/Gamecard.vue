@@ -6,7 +6,7 @@
         <div class="game-info">
           <h3>{{ game.Name }}</h3>
           <p>{{ game.Price }} €</p>
-          <p v-if="game.Average">{{ game.Average }} / 5</p>
+          <p v-if="game.Average">{{ game.Average }} / 10</p>
           <div class="buttons">
             <button class="btn">View Details</button>
             <button @click="addToCart()" class="btn secondary">Add to Cart</button>

@@ -1,14 +1,7 @@
-import{
-    getAllGames,
-    getGameById,
-    insertGame,
-    updateGameById,
-    deleteGameById,
-    getXGames
-}from "../models/GamesModel.js";
+import * as GameModel from "../models/GamesModel.js";
 
 export const showAllGames = (req, res) => {
-    getAllGames((err, results) => {
+    GameModel.getAllGames((err, results) => {
         if (err) {
             res.send(err);
         } else {
@@ -18,7 +11,7 @@ export const showAllGames = (req, res) => {
 };
 
 export const showGameById = (req, res) => {
-    getGameById(req.params.id, (err, results) => {
+    GameModel.getGameById(req.params.id, (err, results) => {
         if (err) {
             res.send(err);
         } else {
@@ -29,7 +22,7 @@ export const showGameById = (req, res) => {
 
 export const addGame = (req, res) => {
     const data = req.body;
-    insertGame(data, (err, results) => {
+    GameModel.insertGame(data, (err, results) => {
         if (err) {
             res.send(err);
         } else {
@@ -41,7 +34,7 @@ export const addGame = (req, res) => {
 export const modifyGame = (req, res) => {
     const data = req.body;
     const id = req.params.id;
-    updateGameById(data, id, (err, results) => {
+    GameModel.updateGameById(data, id, (err, results) => {
         if (err) {
             res.send(err);
         } else {
@@ -51,15 +44,14 @@ export const modifyGame = (req, res) => {
 };
 
 export const removeGame = (req, res) => {
-    deleteGameById(req.params.id, (err, results) => {
+    GameModel.deleteGameById(req.params.id, (err, results) => {
         if (err) {
             res.json(err);
         }
         else {
             res.json(results);
         }
-    }
-    );
+    });
 };
 
 export const ShowXGames = (req, res) => {
@@ -73,12 +65,23 @@ export const ShowXGames = (req, res) => {
     const offset = (page - 1) * x;
 
     // Appeler la fonction du modèle
-    getXGames(x, offset, sort, order, (err, results) => {
+    GameModel.getXGames(x, offset, sort, order, (err, results) => {
         if (err) {
             console.error('Erreur dans ShowXGames:', err);
             res.status(500).send(err);
         } else {
             res.status(200).json(results);
+        }
+    });
+};
+
+export const countGames = (req, res) => {
+    GameModel.getNbGames((err, result) => {
+        if (err) {
+            console.error('Erreur dans countGames:', err);
+            res.send(err);
+        } else {
+            res.json(result);
         }
     });
 };

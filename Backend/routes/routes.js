@@ -1,20 +1,14 @@
 import express from 'express';
-import {
-    showAllGames,
-    showGameById,
-    addGame,
-    modifyGame,
-    removeGame,
-    ShowXGames
-} from '../controllers/Games.js';
+import * as GameController from '../controllers/Games.js';
 
 const router = express.Router();
 
-router.get('/games', showAllGames);
-router.get('/games/:id', showGameById);
-router.post('/games', addGame);
-router.put('/games/:id', modifyGame);
-router.delete('/games/:id', removeGame);
-router.get('/gamesLimited', ShowXGames);
+router.get('/games', GameController.showAllGames);
+router.get('/games/:id', GameController.showGameById);
+router.post('/games', GameController.addGame);
+router.put('/games/:id', GameController.modifyGame);
+router.delete('/games/:id', GameController.removeGame);
+router.get('/gamesLimited', GameController.ShowXGames);
+router.get('/gamesCount', GameController.countGames);
 
 export default router;
