@@ -45,6 +45,7 @@
 import Gamecard from '../components/Gamecard.vue';
 import axios from 'axios';
 
+
 export default {
   name: 'Catalog',
     components: {
@@ -127,6 +128,7 @@ export default {
         this.getNbGames();
         this.games = JSON.parse(localStorage.getItem('games')) || [];
         this.getXGames();
+        console.log(`http://${window.baseURL.hostname}:5001`);
     },
 };
 </script>

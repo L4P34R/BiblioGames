@@ -7,7 +7,7 @@ import http2 from 'http2';
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:8080', 
+    origin: '*', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -46,3 +46,9 @@ try {
 app.listen(5001, () => {
     console.log("Serveur HTTP1 lancé sur http://localhost:5001");
 });
+
+/*
+app.listen(5001, '0.0.0.0', () => {
+    console.log('Server is accessible on local network at port 5001');
+  });
+  */

@@ -6,7 +6,7 @@
         <div>
         <strong>Author</strong>
         <div class="stars">
-          <span v-for="n in rating" :key="n">★</span><span v-for="n in 5-rating" :key="n">☆</span>
+          <span v-for="n in parseInt(rating/2)" :key="n">★</span><span v-for="n in parseInt(5-erating/2)" :key="n">☆</span>
         </div>
         <p class="avis">This is a review.</p>
         </div>
