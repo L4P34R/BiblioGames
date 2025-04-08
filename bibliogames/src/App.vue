@@ -1,8 +1,22 @@
 <template>
   <div>
-    <Header @open-cart = "toggleCart"/>
+    <Header
+    @open-cart = "toggleCart"
+    @openLogin = "toggleLognin()"
+    @openRegister = "toggleRegister()"
+    />
     <router-view 
     @add-to-cart="addToCart"
+    />
+    <LoginPage 
+      v-if="loginPage" 
+    @toRegister="toggleLognin(); toggleRegister();"
+    @closeLogin="toggleLognin()"
+      />
+    <Register
+    v-if="registerPage"
+    @toLogin="toggleLognin(); toggleRegister();"
+    @closeRegister="toggleRegister()"
     />
     <Cart 
       v-if="CartOpen" 
@@ -21,6 +35,8 @@
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import Cart from '@/components/Cart.vue';
+import LoginPage from '@/components/Login.vue';
+import Register from '@/components/Register.vue';
 
 export default {
   name: 'App',
@@ -28,6 +44,8 @@ export default {
     Header,
     Footer,
     Cart,
+    LoginPage,
+    Register,
   },
   data() {
     return {
@@ -39,13 +57,21 @@ export default {
         coupon: '',
         couponApplied: false,
       },
+      loginPage: false,
+      registerPage: false,
     };
   },
   methods: {
     toggleCart() {
       this.CartOpen = !this.CartOpen;
     },
-    toggleConnection() {
+    toggleLognin() {
+      this.loginPage = !this.loginPage;
+    },
+    toggleRegister() {
+      this.registerPage = !this.registerPage;
+    },
+    toggleConnected() {
       this.connected = !this.connected;
     },
     storeCart() {

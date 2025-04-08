@@ -12,8 +12,8 @@
         </ul>
         </nav>
         <ul id="profilinterface">
-        <li v-if="!this.connected" id = "connexion"><a href="#">Login</a></li>
-        <li v-if="!this.connected" id = "inscription"><a href="#">Sign Up</a></li>
+        <li v-if="!this.connected" id = "connexion"><a href="#" @click="this.$emit('openLogin')">Login</a></li>
+        <li v-if="!this.connected" id = "inscription"><a href="#" @click="this.$emit('openRegister')">Sign Up</a></li>
         <li v-if="this.connected" id = "moncompte"><a href="#">My Account</a></li>
         <li v-if="this.connected" id = "deconnexion"><a href="#">Logout</a></li>
         </ul>
