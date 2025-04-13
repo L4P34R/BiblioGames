@@ -75,6 +75,7 @@ import axios from 'axios';
                 this.userName = '';
                 this.email = '';
                 this.password = '';
+                this.alert = '';
                 this.agreed = false;
                 this.toLogin()
             })

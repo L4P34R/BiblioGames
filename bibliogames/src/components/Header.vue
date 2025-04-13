@@ -12,10 +12,10 @@
         </ul>
         </nav>
         <ul id="profilinterface">
-        <li v-if="!this.connected" id = "connexion"><a href="#" @click="this.$emit('openLogin')">Login</a></li>
-        <li v-if="!this.connected" id = "inscription"><a href="#" @click="this.$emit('openRegister')">Sign Up</a></li>
-        <li v-if="this.connected" id = "moncompte"><a href="#">My Account</a></li>
-        <li v-if="this.connected" id = "deconnexion"><a href="#">Logout</a></li>
+        <li v-if="token == null" id = "connexion"><a href="#" @click="this.$emit('openLogin')">Login</a></li>
+        <li v-if="token == null" id = "inscription"><a href="#" @click="this.$emit('openRegister')">Sign Up</a></li>
+        <li v-if="token != null" id = "moncompte"><a href="#">My Account</a></li>
+        <li v-if="token != null" id = "deconnexion"><a href="#" @click="this.$emit('logout')">Logout</a></li>
         </ul>
     </div>
   </header>
@@ -24,9 +24,14 @@
 <script>
 export default {
     name: 'Header',
+    props: {
+        token: {
+            type: String,
+            required: false,
+        },
+    },
     data(){
         return {
-            connected: false
         }
     },
     methods: {

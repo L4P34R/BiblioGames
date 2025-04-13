@@ -128,7 +128,7 @@ export default {
         this.getNbGames();
         this.games = JSON.parse(localStorage.getItem('games')) || [];
         this.getXGames();
-        console.log(`http://${window.baseURL.hostname}:5001`);
+        console.log(`http://localhost:5001`);
     },
 };
 </script>

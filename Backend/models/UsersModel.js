@@ -1,5 +1,5 @@
 import db from "../config/database.js";
-import bcrypt from "bcrypt";
+import bcrypt, { hash } from "bcrypt";
 
 
 export const insertUser = (data, result) => {
@@ -38,6 +38,40 @@ export const insertUser = (data, result) => {
                             }
                         }
                     );
+                }
+            });
+        }
+    });
+};
+
+export const getUserByEmail = (email, result) => {
+    db.query("SELECT * FROM User_ WHERE Email = ?", [email], (err, results) => {
+        if (err) {
+            console.log(err);
+            result(err, null);
+        } else {
+            result(null, results);
+        }
+    });
+};
+
+export const comparePassword = (password, id, result) => {
+    db.query("SELECT * FROM User_ WHERE ID = ?", [id], (err, results) => {
+        if (err) {
+            console.log(err);
+            result(err, null);
+        } else if (results.length === 0) {
+            result(null, false);
+        } else {
+            const hash = results[0].Password;
+            bcrypt.compare(password, hash, (err, res) => {
+                if (err) {
+                    console.log(err);
+                    result(err, null);
+                } else if (res) {
+                    result(null, results); // succès : retourne l'utilisateur
+                } else {
+                    result(null, false); // mauvais mot de passe
                 }
             });
         }

@@ -11,6 +11,8 @@ router.put('/games/:id', GameController.modifyGame);
 router.delete('/games/:id', GameController.removeGame);
 router.get('/gamesLimited', GameController.ShowXGames);
 router.get('/gamesCount', GameController.countGames);
+
 router.post('/UserRegister', UserController.registerUser);
+router.post('/Login', UserController.loginUser);
 
 export default router;

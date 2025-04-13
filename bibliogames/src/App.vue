@@ -1,9 +1,11 @@
 <template>
   <div>
     <Header
+    :token="token"
     @open-cart = "toggleCart()"
     @openLogin = "toggleLognin()"
     @openRegister = "toggleRegister()"
+    @logout = "logout()"
     />
     <router-view 
     @add-to-cart="addToCart(game)"
@@ -12,6 +14,7 @@
       v-if="loginPage" 
     @toRegister="toggleLognin(); toggleRegister();"
     @closeLogin="toggleLognin()"
+    @user-connected="getConnectionInfo"
       />
     <Register
     v-if="registerPage"
@@ -50,7 +53,7 @@ export default {
   data() {
     return {
       CartOpen: false,
-      connected: false,
+      token: null,
       cart: {
         cartItems: [],
         totalPrice: 0,
@@ -148,6 +151,20 @@ export default {
     checkout() {
       alert('Proceeding to checkout...');
     },
+    getConnectionInfo(token) {
+      this.token = token;
+      console.log('Token:', this.token);
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.token = null;
+      this.cart.cartItems = [];
+      this.cart.totalPrice = 0;
+      this.cart.coupon = '';
+      this.cart.couponApplied = false;
+      this.storeCart();
+      alert('Logged out successfully.');
+    },
   },
   mounted() {
     const storedCart = JSON.parse(localStorage.getItem('cart'));
@@ -157,6 +174,10 @@ export default {
       this.cart.coupon = storedCart.coupon || '';
     }
     this.calculateTotal();
+    this.token = localStorage.getItem('token');
+  },
+  beforeDestroy() {
+    this.storeCart();
   },
 };
 </script>
