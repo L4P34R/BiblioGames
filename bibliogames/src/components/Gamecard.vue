@@ -49,22 +49,22 @@
 
 <script>
 export default {
-    name: 'GameCard',
-    props: {
-        game: {
+  name: 'GameCard',
+  props: {
+      game: {
         type: Object,
         required: true,
-        },
-    },
-    data() {
-        return {
-        };
-    },
-    methods: {
-        addToCart() {
-            this.$emit('add-to-cart', this.game);
-        },
-    },
+      },
+  },
+  data() {
+      return {
+      };
+  },
+  methods: {
+      addToCart() {
+          this.$emit('add-to-cart', this.game);
+      },
+  },
 
 }
 </script>

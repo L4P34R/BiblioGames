@@ -1,18 +1,17 @@
 <template>
-  <div class="quote-card">
-    <h3>Review Title</h3>
+  <div class="quote-card" to="/catalog/{{ game.ID }}">
     <div class="author">
         <img src="https://via.placeholder.com/40" alt="user" />
         <div>
-        <strong>Author</strong>
+        <strong>{{this.username}}</strong>
         <div class="stars">
-          <span v-for="n in Math.floor(rating / 2)" :key="'full-' + n">
+          <span v-for="n in Math.floor(review.Note / 2)" :key="'full-' + n">
             <svg class="star" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24
                 14.81 8.63 12 2 9.19 8.63 2 9.24 7.45 13.97 5.82 21z" />
             </svg>
           </span>
-          <span v-if="rating % 2 >= 1" key="half" class="half-star">
+          <span v-if="review.Note % 2 >= 1" key="half" class="half-star">
             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="halfGradient">
@@ -24,26 +23,40 @@
               <path fill="none" stroke="currentColor" stroke-width="1" d="M12 17.27L18.18 21 16.54 13.97 22 9.24 14.81 8.63 12 2 9.19 8.63 2 9.24 7.45 13.97 5.82 21z" />
             </svg>
           </span>
-          <span v-for="n in 5 - Math.ceil(rating / 2)" :key="'empty-' + n">
+          <span v-for="n in 5 - Math.ceil(review.Note / 2)" :key="'empty-' + n">
             <svg class="star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
               <path d="M12 17.27L18.18 21 16.54 13.97 22 9.24
                 14.81 8.63 12 2 9.19 8.63 2 9.24 7.45 13.97 5.82 21z" />
             </svg>
           </span>
         </div>
-        <p class="avis">This is a review.</p>
+        <p class="avis">{{review.Review}}</p>
         </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-    data() {
-        return {
-            rating: 3,
-        }
-    },
+  props: {
+    review: {
+      type: Object,
+      required: true,
+    }
+  },
+  data() {
+      return {
+        username: ''
+      }
+  },
+  mounted(){
+    axios.get(`http://localhost:5001/Username/${this.review.UserID}`)
+    .then((resp) => {
+      this.username = resp.data.username
+    })
+  }
 }
 </script>
 

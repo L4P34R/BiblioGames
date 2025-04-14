@@ -77,3 +77,17 @@ export const comparePassword = (password, id, result) => {
         }
     });
 };
+
+export const getUsernameById = (id, result) => {
+    db.query("SELECT UserName FROM User_ WHERE ID = ?", [id], (err, results) => {
+        if (err) {
+            console.log(err);
+            result(err, null);
+        } else if (results.length === 0) {
+            result(null, false);
+        } else {
+            console.log("Username ", results[0], " fetch successfully.");
+            result(null, results[0]);
+        }
+    });
+};

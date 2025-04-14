@@ -75,3 +75,19 @@ export const loginUser = (req, res) => {
         });
     }
 }
+
+export const fetchUsernameById = (req, res) => {
+    console.log("Fetching Username: ", req.params.Id);
+    UserModel.getUsernameById(req.params.Id, (err, username) => {
+        if (err) {
+            console.error("Erreur dans fetchUsernameById:", err);
+            res.status(500).json({ error: "Erreur serveur" });
+        } else if (!username) {
+            console.log("Aucun utilisateur trouvé avec cet ID");
+            res.status(404).json({ error: "Utilisateur non trouvé" });
+        } else {
+            console.log("Utilisateur trouvé avec succès dans fetchUsernameById");
+            res.status(200).json({ username: username.UserName }); // Accès direct à UserName
+        }
+    });
+};

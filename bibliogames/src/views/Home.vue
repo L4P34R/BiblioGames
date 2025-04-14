@@ -16,9 +16,9 @@
       <h2>Reviews</h2>
       <p>Some reviews from previous buyers</p>
       <div class="quotes">
-        <span v-for="i in 6" :key="i">
-            <review-card />
-        </span>
+        <review-card v-for="review in reviews"
+        :key="review.id"
+        :review="review" />
       </div>
     </section>
   </div>
@@ -26,12 +26,31 @@
 
 <script>
 import ReviewCard from '@/components/ReviewCard.vue'
+import axios from 'axios';
 
 export default {
     name: 'Home',
     components: {
         ReviewCard,
     },
+    data() {
+        return {
+            reviews: [],
+        }
+    },
+    methods:{
+        getReviews(){
+          console.log("Fetching home reviews");
+          axios.get('http://localhost:5001/latestReviews')
+          .then(res => {
+            console.log("Reviews fetched successfully");
+            this.reviews = res.data;
+          })
+        }
+    },
+    mounted(){
+      this.getReviews();
+    }
 }
 </script>
 
