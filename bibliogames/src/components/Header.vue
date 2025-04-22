@@ -108,13 +108,13 @@ nav ul li a:hover {
     font-size: 16px;
 }
 
-#connexion a {
+#connexion a , #moncompte a{
     border: 1px solid white;
     color: white;
     background: transparent;
 }
 
-#inscription a {
+#inscription a ,#deconnexion a{
     background-color: white;
     color: black;
 }

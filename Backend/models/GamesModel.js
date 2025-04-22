@@ -25,46 +25,39 @@ export const getGameById = (id, result)=>{
 }
 
 export const insertGame = (data, result) => {
-    db.query("SELECT MAX(id) AS maxId FROM Game", (err, results) => {
-        if (err) {
-            console.log(err);
-            result(err, null);
-        } else {
-            const id = results[0].maxId + 1;
-            db.query(
-                `INSERT INTO Game 
-                (ID, Name, Description, Year_, MinPlayer, MaxPlayer, PlayTime, MinPlaytime, MaxPlaytime, MinAge, Trading, Whising, Average, NBRates, ImageURL, BGGURL, Price) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    id,
-                    data.Name,
-                    data.Description,
-                    data.Year_,
-                    data.MinPlayer,
-                    data.MaxPlayer,
-                    data.PlayTime,
-                    data.MinPlaytime,
-                    data.MaxPlaytime,
-                    data.MinAge,
-                    data.Trading,
-                    data.Wishing,
-                    data.Average,
-                    data.NBRates,
-                    data.ImageURL,
-                    data.BGGURL,
-                    data.Price,
-                ],
-                (err, results) => {
-                    if (err) {
-                        console.log(err);
-                        result(err, null);
-                    } else {
-                        result(null, results);
-                    }
-                }
-            );
+    db.query("START TRANSACTION;");
+    db.query(
+        `INSERT INTO Game 
+        (Name, Description, Year_, MinPlayer, MaxPlayer, PlayTime, MinPlaytime, MaxPlaytime, MinAge, Trading, Wishing, Average, NBRates, ImageURL, BGGURL, Price) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            data.Name,
+            data.Description,
+            data.Year_,
+            data.MinPlayer,
+            data.MaxPlayer,
+            data.PlayTime,
+            data.MinPlaytime,
+            data.MaxPlaytime,
+            data.MinAge,
+            data.Trading,
+            data.Wishing,
+            data.Average,
+            data.NBRates,
+            data.ImageURL,
+            data.BGGURL,
+            data.Price,
+        ],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+                db.query("COMMIT;");
+            }
         }
-    });
+    );
 };
 
 export const deleteGameById = (id, result)=>{

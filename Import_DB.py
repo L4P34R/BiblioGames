@@ -14,7 +14,7 @@ config = {
     'user': 'root',
     'password': '', # Remplacez par votre mot de passe
     'host': 'localhost',
-    'database': 'bibliogames',
+    'database': 'bibliogames',#Remplacez par le nom de votre DB
     'raise_on_warnings': True
 }
 
@@ -34,6 +34,8 @@ details = pd.read_csv("details.csv")
 ratings = pd.read_csv("ratings.csv")
 
 merged = pd.merge(details, ratings, how='left', left_on='id', right_on='id')
+
+cursor.execute("START TRANSACTION;")
 
 cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
 opTracker = 0
@@ -69,11 +71,12 @@ for _, row in merged.iterrows():
     random_price = random.randint(10, 100) - centimes/10
 
     # Insertion dans la table game
-    if not cursor.execute("SELECT 1 FROM game WHERE ID = %s", (game_id,)).fetchone():
+    if not cursor.execute("SELECT 1 FROM game WHERE ID = %s", (game_id,)):
       cursor.execute("""
-          INSERT IGNORE INTO game (ID, name, description, year_, minplayer, maxplayer, playtime, minplaytime, maxplaytime, minage, trading, wishing, average, nbrates, imageurl, bggurl, price)
+          INSERT INTO game (ID, name, description, year_, minplayer, maxplayer, playtime, minplaytime, maxplaytime, minage, trading, wishing, average, nbrates, imageurl, bggurl, price)
           VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
       """, (game_id, name, desc, year, minp, maxp, pt, minpt, maxpt, minage, trading, wishing, average, nbRates, imgURL, BGGUrl, random_price))
+      print("inserted")
 
       # Insertion dans la table designer
       if pd.notna(row['boardgamedesigner']):
@@ -178,6 +181,8 @@ for _, row in merged.iterrows():
                   cursor.execute("SELECT 1 FROM implement WHERE GameID = %s AND ImplementationID = %s", (game_id, impl_id))
                   if not cursor.fetchone():
                       cursor.execute("INSERT IGNORE INTO implement (GameID, ImplementationID) VALUES (%s, %s)", (game_id, impl_id))
+
+cursor.execute("COMMIT;")
 
 cnx.commit()
 cursor.close()

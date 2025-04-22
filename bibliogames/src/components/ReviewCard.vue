@@ -11,7 +11,7 @@
                 14.81 8.63 12 2 9.19 8.63 2 9.24 7.45 13.97 5.82 21z" />
             </svg>
           </span>
-          <span v-if="review.Note % 2 >= 1" key="half" class="half-star">
+          <span v-if="review.Note % 2 == 1" key="half" class="half-star">
             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="halfGradient">

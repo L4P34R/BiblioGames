@@ -335,7 +335,6 @@ export default {
     border: .5px solid #949494;
     color: white;
     padding: 10px;
-    paddining-bottom: 0;
     border-radius: 5px;
     cursor: pointer;
   }

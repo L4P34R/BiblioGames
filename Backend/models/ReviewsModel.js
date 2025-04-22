@@ -23,41 +23,34 @@ export const getReviewsByGameId = (gameId, limit, offset, result) => {
 };
 
 export const addReview = (data, result) => {
-    db.query("SELECT MAX(id) AS maxId FROM Rating", (err, results) => {
-        if (err) {
-            console.log(err);
-            result(err, null);
-        } else {
-            const id = results[0].maxId + 1;
-            const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            db.query(
-                `INSERT INTO Rating
-                (ID, GameID, UserID, Note, Review, Date) 
-                VALUES (?, ?, ?, ?, ?, ?)`,
-                [
-                    id,
-                    data.GameID,
-                    data.UserID,
-                    data.Note,
-                    data.Content,
-                    date
-                ],
-                (err, results) => {
-                    if (err) {
-                        console.log(err);
-                        result(err, null);
-                    } else {
-                        result(null, results);
-                    }
-                }
-            );
+    const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    db.query("START TRANSACTION;");
+    db.query(
+        `INSERT INTO Rating
+        (GameID, UserID, Note, Review, Date) 
+        VALUES (?, ?, ?, ?, ?)`,
+        [
+            data.GameID,
+            data.UserID,
+            data.Note,
+            data.Content,
+            date
+        ],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+                db.query("COMMIT;");
+            }
         }
-    });
+    );
 };
 
 export const updateReview = (data, result) => {
     db.query(
-        "UPDATE Rating SET Note = ? Review = ? WHERE ID = ?",
+        "UPDATE Rating SET Note = ?, Review = ? WHERE ID = ?",
         [data.Note, data.Content, data.ID],
         (err, results) => {
             if (err) {
