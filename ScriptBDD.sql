@@ -311,4 +311,24 @@ END;
 
 DELIMITER ;
 
-COMMIT;
+CREATE VIEW NewGames AS
+SELECT
+    ID,
+    Name,
+    Price,
+    Average,
+    ImageUrl
+FROM Game
+WHERE Price IS NOT NULL;
+
+CREATE VIEW ReviewCard AS
+SELECT
+	Note,
+    Review,
+    User_.UserName
+FROM Rating
+JOIN User_ ON User_.ID = UserID
+WHERE Review IS NOT NULL
+ORDER BY Date DESC;
+
+COMMIT; 

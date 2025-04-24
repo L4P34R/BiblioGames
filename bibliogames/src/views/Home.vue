@@ -41,7 +41,11 @@ export default {
     methods:{
         getReviews(){
           console.log("Fetching home reviews");
-          axios.get('http://localhost:5001/latestReviews')
+          axios.get('http://localhost:5001/latestReviews', {
+            params: {
+              limit: 6
+            }
+          })
           .then(res => {
             console.log("Reviews fetched successfully");
             this.reviews = res.data;

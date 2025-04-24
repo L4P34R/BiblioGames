@@ -2,7 +2,7 @@ import * as ReviewModel from '../models/ReviewsModel.js';
 
 export const getLatestReviews = (req, res) => {
     console.log("Appel de getLatestReviews");
-    const limit = req.query.limit || 10;
+    const limit = parseInt(req.query.limit) || 10;
     ReviewModel.getLatestReviews(limit, (err, results) => {
         if (err) {
             console.error('Erreur dans getLatestReviews:', err);

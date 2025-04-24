@@ -40,7 +40,7 @@
             <p v-if="game.Average">{{ Math.round(game.Average / 2 * 100) / 100 }} / 5</p>
           </div>
           <div class="buttons">
-            <button class="btn">View Details</button>
+            <router-link :to="`/Product/${game.ID}`" class="btn">View Details</router-link>
             <button @click="addToCart()" class="btn secondary">Add to Cart</button>
           </div>
       </div>

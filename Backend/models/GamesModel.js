@@ -102,7 +102,7 @@ export const getXGames = (x, offset, sort, order, result) => {
     }
 
     // Construire la requête SQL avec des valeurs sécurisées
-    const query = `SELECT * FROM Game ORDER BY ${sort} ${order} LIMIT ? OFFSET ?`;
+    const query = `SELECT * FROM NewGames ORDER BY ${sort} ${order} LIMIT ? OFFSET ?`;
 
     // Exécuter la requête
     db.query(query, [x, offset], (err, results) => {
@@ -117,7 +117,7 @@ export const getXGames = (x, offset, sort, order, result) => {
 
 export const getNbGames = (result) => {
     // Requête SQL pour compter le nombre total de jeux
-    db.query("SELECT COUNT(*) AS total FROM Game", (err, results) => {
+    db.query("SELECT COUNT(1) AS total FROM NewGames", (err, results) => {
         if (err) {
             console.error("Erreur dans getNbGames:", err);
             result(err, null);

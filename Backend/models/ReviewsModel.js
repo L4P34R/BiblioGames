@@ -1,7 +1,7 @@
 import db from "../config/database.js";
 
 export const getLatestReviews = (limit, result) => {
-    db.query("SELECT * FROM Rating WHERE Review IS NOT NULL ORDER BY Date DESC LIMIT ?",[limit] , (err, results) => {
+    db.query("SELECT * FROM ReviewCard LIMIT ?",[limit] , (err, results) => {
         if (err) {
             console.log(err);
             result(err, null);

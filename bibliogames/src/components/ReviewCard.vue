@@ -3,7 +3,7 @@
     <div class="author">
         <img src="https://via.placeholder.com/40" alt="user" />
         <div>
-        <strong>{{this.username}}</strong>
+        <strong>{{review.UserName}}</strong>
         <div class="stars">
           <span v-for="n in Math.floor(review.Note / 2)" :key="'full-' + n">
             <svg class="star" viewBox="0 0 24 24" fill="currentColor">
@@ -51,12 +51,6 @@ export default {
         username: ''
       }
   },
-  mounted(){
-    axios.get(`http://localhost:5001/Username/${this.review.UserID}`)
-    .then((resp) => {
-      this.username = resp.data.username
-    })
-  }
 }
 </script>
 
