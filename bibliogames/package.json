@@ -17,10 +17,6 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0"
   }
-  "scripts": {
-  "dev": "vue-cli-service serve",
-  "build": "vue-cli-service build"
-  }
 }
 
 
