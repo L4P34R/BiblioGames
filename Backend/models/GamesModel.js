@@ -125,5 +125,126 @@ export const getNbGames = (result) => {
             // Retourner le total des jeux
             result(null, results[0].total);
         }
-    });
+    }
+);
+};
+
+// Récupérer les catégories d'un jeu
+export const getCategoriesByGameId = (id, result) => {
+    db.query(
+        "SELECT c.Name FROM Category c JOIN Belong b ON c.ID = b.CategoryID WHERE b.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+};
+
+// Récupérer les familles d'un jeu
+export const getFamiliesByGameId = (id, result) => {
+    db.query(
+        "SELECT f.Name FROM Familly f JOIN BelongFamily bf ON f.ID = bf.FamillyID WHERE bf.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+};
+
+// Récupérer les mécaniques d'un jeu
+export const getMechanicsByGameId = (id, result) => {
+    db.query(
+        "SELECT m.Name FROM Mechanic m JOIN Use_ u ON m.ID = u.MechanicID WHERE u.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+};
+
+// Récupérer les designers d'un jeu
+export const getDesignersByGameId = (id, result) => {
+    db.query(
+        "SELECT d.Name FROM Designer d JOIN Create_ c ON d.ID = c.DesignerID WHERE c.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+};
+
+// Récupérer les illustrateurs d'un jeu
+export const getArtistsByGameId = (id, result) => {
+    db.query(
+        "SELECT a.Name FROM Artist a JOIN Illustrate i ON a.ID = i.ArtistID WHERE i.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+};
+
+// Récupérer les éditeurs d'un jeu
+export const getPublishersByGameId = (id, result) => {
+    db.query(
+        "SELECT p.Name FROM Publisher p JOIN Publish pb ON p.ID = pb.PublisherID WHERE pb.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+};
+
+// Récupérer les implémentations d'un jeu
+export const getImplementationsByGameId = (id, result) => {
+    db.query(
+        "SELECT i.Name FROM Implementation i JOIN Implement imp ON i.ID = imp.ImplementationID WHERE imp.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+};
+
+// Récupérer les extensions d'un jeu
+export const getExpansionsByGameId = (id, result) => {
+    db.query(
+        "SELECT e.Name FROM Expansion e JOIN Extend ex ON e.ID = ex.ExpansionID WHERE ex.GameID = ?", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
 };

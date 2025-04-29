@@ -40,7 +40,7 @@
             <p v-if="game.Average">{{ Math.round(game.Average / 2 * 100) / 100 }} / 5</p>
           </div>
           <div class="buttons">
-            <router-link :to="`/Product/${game.ID}`" class="btn">View Details</router-link>
+            <button class="btn" @click="ViewDetails();">View Details</button>
             <button @click="addToCart()" class="btn secondary">Add to Cart</button>
           </div>
       </div>
@@ -61,6 +61,9 @@ export default {
       };
   },
   methods: {
+      ViewDetails() {
+          this.$router.push({ name: 'Product Info', params: { id: this.game.ID } });
+      },
       addToCart() {
           this.$emit('add-to-cart', this.game);
       },

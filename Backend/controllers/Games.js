@@ -106,3 +106,59 @@ export const countGames = (req, res) => {
         }
     });
 };
+
+export const showCategoriesByGameId = (req, res) => {
+    GameModel.getCategoriesByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};
+
+export const showFamiliesByGameId = (req, res) => {
+    GameModel.getFamiliesByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};
+
+export const showMechanicsByGameId = (req, res) => {
+    GameModel.getMechanicsByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};
+
+export const showDesignersByGameId = (req, res) => {
+    GameModel.getDesignersByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};
+
+export const showArtistsByGameId = (req, res) => {
+    GameModel.getArtistsByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};
+
+export const showPublishersByGameId = (req, res) => {
+    GameModel.getPublishersByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};
+
+export const showImplementationsByGameId = (req, res) => {
+    GameModel.getImplementationsByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};
+
+export const showExpansionsByGameId = (req, res) => {
+    GameModel.getExpansionsByGameId(req.params.id, (err, results) => {
+        if (err) res.status(500).json({ error: err });
+        else res.status(200).json(results);
+    });
+};

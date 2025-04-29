@@ -58,7 +58,7 @@ export default {
         Page: 1,
         totalGames: 0,
         sort: 'average',
-        order: 'ASC',
+        order: 'DESC',
         maxPage: 1,
         goToPage: null, // Page saisie par l'utilisateur
     };

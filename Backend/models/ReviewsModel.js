@@ -12,7 +12,7 @@ export const getLatestReviews = (limit, result) => {
 };
 
 export const getReviewsByGameId = (gameId, limit, offset, result) => {
-    db.query("SELECT * FROM Rating WHERE GameID = ? ORDER BY ID DESC LIMIT ? OFFSET ?", [gameId, limit, offset], (err, results) => {
+    db.query("SELECT * FROM ProductReview WHERE GameID = ? ORDER BY ID DESC LIMIT ? OFFSET ?", [gameId, limit, offset], (err, results) => {
         if (err) {
             console.log(err);
             result(err, null);
@@ -30,8 +30,8 @@ export const addReview = (data, result) => {
         (GameID, UserID, Note, Review, Date) 
         VALUES (?, ?, ?, ?, ?)`,
         [
-            data.GameID,
-            data.UserID,
+            data.GameId,
+            data.UserId,
             data.Note,
             data.Content,
             date

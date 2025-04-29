@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header :class="{ 'hidden': isHidden }">
     <img load="'lazy'" src="../assets/BiblioGamesLogo.png" alt="Logo" />
     <div class="header-right">
         <nav>
@@ -30,24 +30,48 @@ export default {
             required: false,
         },
     },
-    data(){
+    data() {
         return {
-        }
+            lastScrollTop: 0,
+            currentTop: 0,
+        };
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
+        handleScroll() {
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const delta = currentScroll - this.lastScrollTop;
+
+            this.currentTop = Math.min(Math.max(this.currentTop - delta, -75), 0);
+
+            const header = this.$el;
+            header.style.top = `${this.currentTop}px`;
+
+            this.lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        },
         toggleConnection() {
-        this.connected = !this.connected;
+            this.connected = !this.connected;
         },
         openCart() {
             this.$emit('open-cart');
         }
     }
-
 }
 </script>
 
 <style>
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transition: top 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: space-between;

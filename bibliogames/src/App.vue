@@ -7,9 +7,11 @@
     @openRegister = "toggleRegister()"
     @logout = "logout()"
     />
-    <router-view 
-    @add-to-cart="addToCart(game)"
-    />
+    <div class="body">
+      <router-view 
+      @add-to-cart="addToCart"
+      />
+    </div>
     <LoginPage 
       v-if="loginPage" 
     @toRegister="toggleLognin(); toggleRegister();"
@@ -89,7 +91,7 @@ export default {
     },
     addToCart(game) {
       const existingItem = this.cart.cartItems.find(
-        (item) => item.id === game.ID
+        (item) => item.id === game.id
       );
       if (existingItem) {
         existingItem.quantity++;
@@ -189,7 +191,6 @@ export default {
     background-color: #1e1e1e;
     color: white;
   }
-
 
 
   /*Styles for login and registernd register*/
@@ -358,5 +359,11 @@ export default {
     min-width: 100%;
     min-height: 100%;
     object-fit: cover;
+  }
+</style>
+
+<style scoped>
+  .body{
+    margin-top: 75px;
   }
 </style>

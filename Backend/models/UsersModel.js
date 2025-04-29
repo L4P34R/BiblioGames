@@ -1,5 +1,5 @@
 import db from "../config/database.js";
-import bcrypt, { hash } from "bcrypt";
+const bcrypt = require('bcryptjs');
 
 
 export const insertUser = (data, result) => {

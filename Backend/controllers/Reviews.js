@@ -1,4 +1,6 @@
 import * as ReviewModel from '../models/ReviewsModel.js';
+import jwt from 'jsonwebtoken';
+const SECRET_KEY = 'bibliogames_secret_key';
 
 export const getLatestReviews = (req, res) => {
     console.log("Appel de getLatestReviews");
@@ -17,8 +19,8 @@ export const getLatestReviews = (req, res) => {
 export const getReviewsByGameId = (req, res) => {
     console.log("Appel de getReviewsByGameId");
     const gameId = req.params.gameId;
-    const limit = req.query.limit || 10;
-    const offset = req.query.offset || 0;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
 
     ReviewModel.getReviewsByGameId(gameId, limit, offset, (err, results) => {
         if (err) {
@@ -33,8 +35,13 @@ export const getReviewsByGameId = (req, res) => {
 
 export const addReview = (req, res) => {
     console.log("Appel de addReview");
-    const data = req.body;
-
+    const data = {
+        GameId: req.body.reviewData.GameId,
+        UserId: jwt.verify(req.body.reviewData.Token, SECRET_KEY).id,
+        Note: req.body.reviewData.Note,
+        Content: req.body.reviewData.Content
+    };
+    console.log("Data dans addReview:", data);
     ReviewModel.addReview(data, (err, results) => {
         if (err) {
             console.error('Erreur dans addReview:', err);

@@ -22,6 +22,7 @@ const routes = [
 
   {
     path:'/product/:id',
+    name: 'Product Info',
     component: Product
   }
 ]

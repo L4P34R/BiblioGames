@@ -311,6 +311,55 @@ END;
 
 DELIMITER ;
 
+DELIMITER $$
+
+CREATE TRIGGER trg_update_game_rating_after_update
+AFTER UPDATE ON Rating
+FOR EACH ROW
+BEGIN
+  UPDATE Game
+  SET
+    Average = (
+      SELECT AVG(Note)
+      FROM Rating
+      WHERE GameID = NEW.GameID
+    ),
+    NbRates = (
+      SELECT COUNT(*)
+      FROM Rating
+      WHERE GameID = NEW.GameID
+    )
+  WHERE ID = NEW.GameID;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_update_game_rating_after_delete
+AFTER DELETE ON Rating
+FOR EACH ROW
+BEGIN
+  UPDATE Game
+  SET
+    Average = (
+      SELECT IFNULL(AVG(Note), 0)
+      FROM Rating
+      WHERE GameID = OLD.GameID
+    ),
+    NbRates = (
+      SELECT COUNT(*)
+      FROM Rating
+      WHERE GameID = OLD.GameID
+    )
+  WHERE ID = OLD.GameID;
+END$$
+
+DELIMITER ;
+
+
+-- Views
+
 CREATE VIEW NewGames AS
 SELECT
     ID,
@@ -323,12 +372,25 @@ WHERE Price IS NOT NULL;
 
 CREATE VIEW ReviewCard AS
 SELECT
+    ID,
 	Note,
     Review,
     User_.UserName
 FROM Rating
 JOIN User_ ON User_.ID = UserID
 WHERE Review IS NOT NULL
+ORDER BY Date DESC;
+
+CREATE VIEW ProductReview AS
+SELECT
+    r.ID,
+    r.GameID,
+    r.Note,
+    r.Review,
+    r.Date,
+    u.UserName
+FROM Rating r
+JOIN User_ u ON u.ID = UserID
 ORDER BY Date DESC;
 
 COMMIT; 
