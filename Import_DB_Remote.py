@@ -12,10 +12,10 @@ def extract_list(entry):
 
 try:
     connection = mysql.connector.connect(
-        host="shuttle.proxy.rlwy.net",
+        host="interchange.proxy.rlwy.net",
         port=45297,
         user="root",
-        password="XHnvYWJFDeKitTQWFdvjyajLMqUznNKI",
+        password="timlDeklfyFFRQWSVjoQwJEqUvFUGTsm",
         database="railway"
     )
     if connection.is_connected():

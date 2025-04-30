@@ -10,5 +10,8 @@ module.exports = defineConfig({
         __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: JSON.stringify(false), // Désactive les détails des erreurs d'hydratation en production
       }),
     ],
+  },
+  devServer: {
+    allowedHosts: 'all'
   }
 });
