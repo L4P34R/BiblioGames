@@ -67,7 +67,7 @@ import axios from 'axios';
             };
 
             console.log('Registering user:', userData);
-            axios.post('http://localhost:5001/UserRegister', userData)
+            axios.post(`${process.env.REACT_APP_BACKEND_URL}/UserRegister`, userData)
             .then(res => {
                 console.log('Utilisateur enregistré');
                 this.lastName = '';

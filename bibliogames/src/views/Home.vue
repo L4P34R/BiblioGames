@@ -41,7 +41,7 @@ export default {
     methods:{
         getReviews(){
           console.log("Fetching home reviews");
-          axios.get('http://localhost:5001/latestReviews', {
+          axios.get(`${process.env.REACT_APP_BACKEND_URL}/latestReviews`, {
             params: {
               limit: 6
             }

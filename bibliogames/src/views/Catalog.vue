@@ -67,7 +67,7 @@ export default {
     async getXGames() {
         if (!this.games.find(g => g.Page === this.Page)) {
             try {
-                const response = await axios.get('http://localhost:5001/gamesLimited', {
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/gamesLimited`, {
                     params: {
                         x: this.numberOfGames,
                         page: this.Page,
@@ -91,7 +91,7 @@ export default {
     },
     async getNbGames() {
         try {
-            const response = await axios.get('http://localhost:5001/gamesCount');
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/gamesCount`);
             this.totalGames = parseInt(response.data, 10); // Utilisation correcte de parseInt avec la base 10
             this.maxPage = Math.ceil(this.totalGames / this.numberOfGames); // Calcul du nombre total de pages
             console.log(`Total games: ${this.totalGames}, Max pages: ${this.maxPage}`);
