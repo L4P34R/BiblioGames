@@ -43,8 +43,9 @@ try {
 */
 
 
-app.listen(5001, () => {
-    console.log("Serveur HTTP1 lancé sur http://localhost:5001");
+const PORT = process.env.PORT || 5001;
+app.listen(PORT, () => {
+    console.log(`Serveur lancé sur port ${PORT}`);
 });
 
 /*
