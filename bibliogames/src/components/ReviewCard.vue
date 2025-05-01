@@ -58,8 +58,6 @@ export default {
 border: .7px solid #444;
 border-radius: 10px;
 padding: 1rem;
-max-height: 150px;
-overflow: scroll;
 }
 
 h3 {
