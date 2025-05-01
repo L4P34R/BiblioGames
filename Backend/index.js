@@ -10,7 +10,7 @@ const app = express();
 
 const allowedOrigins = [
     'http://localhost:8080',
-    'http://localhost:5173',
+    'https://biblio-games-464ev8tj6-l4p34rs-projects.vercel.app',
     'https://biblio-games.vercel.app'
 ];
 
