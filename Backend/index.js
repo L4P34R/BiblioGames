@@ -11,7 +11,8 @@ const app = express();
 const allowedOrigins = [
     'http://localhost:8080',
     'https://biblio-games-464ev8tj6-l4p34rs-projects.vercel.app',
-    'https://biblio-games.vercel.app'
+    'https://biblio-games.vercel.app',
+    'https://biblio-games-git-master-l4p34rs-projects.vercel.app'
 ];
 
 const corsOptions = {
