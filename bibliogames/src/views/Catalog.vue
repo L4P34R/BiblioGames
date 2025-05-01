@@ -5,13 +5,26 @@
         <p>Explore our collection of games</p>
         </section>
 
-        <section class="game-list">
+        <div class="search-bar">
+          <input
+            type="text"
+            class="search-input"
+            v-model="searchInput"
+            placeholder="Search by name"
+          />
+          <button class="search-button" @click="onSearch">Search</button>
+        </div>
+
+        <section v-if="games.length != 0" class="game-list">
             <gamecard 
                 v-for="game in games.find(g => g.Page === Page)?.data" 
                 :key="game.id" 
                 :game="game" 
                 @add-to-cart="addToCart" 
             />
+        </section>
+        <section v-else>
+            <p>No games found with your filters</p>
         </section>
         <div class="nav-buttons">
             <button class="nav-button" v-if="Page > 1" @click="Page = 1; getXGames()">First Page</button>
@@ -61,18 +74,21 @@ export default {
         order: 'DESC',
         maxPage: 1,
         goToPage: null, // Page saisie par l'utilisateur
+        name: '',
+        searchInput: '',
     };
   },
     methods: {
     async getXGames() {
         if (!this.games.find(g => g.Page === this.Page)) {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/gamesLimited`, {
+                const response = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/gamesLimited`, {
                     params: {
                         x: this.numberOfGames,
                         page: this.Page,
                         sort: this.sort,
                         order: this.order,
+                        name: this.name,
                     },
                 });
                 const fetchedGames = {
@@ -91,8 +107,13 @@ export default {
     },
     async getNbGames() {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/gamesCount`);
-            this.totalGames = parseInt(response.data, 10); // Utilisation correcte de parseInt avec la base 10
+            const response = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/gamesCount`, {
+                params: {
+                    name: this.name,
+                },
+            }
+            );
+            this.totalGames = parseInt(response.data.total, 10); // Utilisation correcte de parseInt avec la base 10
             this.maxPage = Math.ceil(this.totalGames / this.numberOfGames); // Calcul du nombre total de pages
             console.log(`Total games: ${this.totalGames}, Max pages: ${this.maxPage}`);
         } catch (error) {
@@ -122,6 +143,15 @@ export default {
     },
     isValidPage(page) {
         return page >= 1 && page <= this.maxPage;
+    },
+    onSearch() {
+      this.name = this.searchInput;
+      console.log("Searching for:", this.name);
+      this.Page = 1;
+      this.games = [];
+      this.storeGames();
+      this.getNbGames();
+      this.getXGames();
     },
     },
     created() {
@@ -217,6 +247,7 @@ export default {
   color: white;
   text-align: center;
   font-size: 1rem;
+  flex: 1;
 }
 
 .page-input::placeholder {
@@ -226,5 +257,47 @@ export default {
 .page-input:focus {
   outline: none;
   border-color: white;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: 1px solid #949494;
+  background-color: #303030;
+  color: white;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+}
+
+.search-button{
+  background-color: #303030;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  border: 0.5px solid #949494;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  height: 100%;
+}
+
+.search-button:hover {
+  background-color: white;
+  color: black;
+  opacity: 0.7;
+  transform: translateY(-2px);
 }
 </style>

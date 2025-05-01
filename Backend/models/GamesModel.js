@@ -88,7 +88,7 @@ export const updateGameById = (data, result)=>{
     });
 }
 
-export const getXGames = (x, offset, sort, order, result) => {
+export const getXGames = (x, offset, sort, order, name, result) => {
     // Valider les entrées pour éviter les injections SQL
     const validSortColumns = ['id', 'name', 'average', 'year_']; // Liste des colonnes autorisées
     const validOrder = ['ASC', 'DESC']; // Ordres autorisés
@@ -102,10 +102,10 @@ export const getXGames = (x, offset, sort, order, result) => {
     }
 
     // Construire la requête SQL avec des valeurs sécurisées
-    const query = `SELECT * FROM NewGames ORDER BY ${sort} ${order} LIMIT ? OFFSET ?`;
+    const query = `SELECT * FROM NewGames WHERE Name LIKE ? ORDER BY ${sort} ${order} LIMIT ? OFFSET ?`;
 
     // Exécuter la requête
-    db.query(query, [x, offset], (err, results) => {
+    db.query(query, [`%${name}%`, x, offset], (err, results) => {
         if (err) {
             console.log('Erreur dans getXGames:', err);
             result(err, null);
@@ -115,9 +115,9 @@ export const getXGames = (x, offset, sort, order, result) => {
     });
 };
 
-export const getNbGames = (result) => {
+export const getNbGames = (name, result) => {
     // Requête SQL pour compter le nombre total de jeux
-    db.query("SELECT COUNT(1) AS total FROM NewGames", (err, results) => {
+    db.query("SELECT COUNT(1) AS total FROM newgames WHERE newgames.Name LIKE ?", [`%${name}%`], (err, results) => {
         if (err) {
             console.error("Erreur dans getNbGames:", err);
             result(err, null);

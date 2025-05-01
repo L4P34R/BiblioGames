@@ -41,7 +41,7 @@ export default {
     methods:{
         getReviews(){
           console.log("Fetching home reviews");
-          axios.get(`${process.env.REACT_APP_BACKEND_URL}/latestReviews`, {
+          axios.get(`${process.env.VUE_APP_BACKEND_URL}/latestReviews`, {
             params: {
               limit: 6
             }
@@ -136,7 +136,7 @@ export default {
     background-color: #e5e5e5;
     height: 30vw;
     margin: 0;
-    width: 100%;
+    width: 100vw;
     margin-top: 1rem;
     overflow: hidden;
     }

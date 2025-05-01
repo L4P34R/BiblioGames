@@ -41,7 +41,7 @@ export default {
                 Content: this.comment,
                 Token: this.token,
             };
-            axios.post(`${process.env.REACT_APP_BACKEND_URL}/Review`, {reviewData})
+            axios.post(`${process.env.VUE_APP_BACKEND_URL}/Review`, {reviewData})
             .then(response => {
                 console.log('Review posted successfully:', response.data);
                 alert('Thank you for your review!');

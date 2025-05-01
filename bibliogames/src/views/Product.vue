@@ -122,70 +122,70 @@ import AddReview from '../components/AddReview.vue';
         this.id = this.$route.params.id;
         console.log('ID récupéré dans l’URL:', this.id);
         window.addEventListener("scroll", this.handleScroll);
-        this.game = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}`)
+        this.game = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}`)
           .then(response => {
             this.game = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération du jeu:", error);
           });
-        this.categories = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}/categories`)
+        this.categories = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}/categories`)
           .then(response => {
             this.categories = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des catégories:", error);
           });
-        this.families = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}/families`)
+        this.families = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}/families`)
           .then(response => {
             this.families = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des familles:", error);
           });
-        this.implementations = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}/implementations`)
+        this.implementations = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}/implementations`)
           .then(response => {
             this.implementations = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des implémentations:", error);
           });
-        this.expansions = axios.get(`${process.env.REACT_APP_BACKEND_URL}/${this.id}/expansions`)  
+        this.expansions = axios.get(`${process.env.VUE_APP_BACKEND_URL}/${this.id}/expansions`)  
           .then(response => {
             this.expansions = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des extensions:", error);
           });
-        this.designers = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}/designers`)
+        this.designers = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}/designers`)
           .then(response => {
             this.designers = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des designers:", error);
           });
-        this.artists = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}/artists`)
+        this.artists = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}/artists`)
           .then(response => {
             this.artists = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des artistes:", error);
           });
-        this.mechanics = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}/mechanics`)  
+        this.mechanics = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}/mechanics`)  
           .then(response => {
             this.mechanics = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des mécaniques:", error);
           });
-        this.publishers = axios.get(`${process.env.REACT_APP_BACKEND_URL}/games/${this.id}/publishers`)
+        this.publishers = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}/publishers`)
           .then(response => {
             this.publishers = response.data;
           })
           .catch(error => {
             console.error("Erreur lors de la récupération des éditeurs:", error);
           });
-        this.review= axios.get(`${process.env.REACT_APP_BACKEND_URL}/reviews/${this.id}?limit=10&offset=0`)
+        this.review= axios.get(`${process.env.VUE_APP_BACKEND_URL}/reviews/${this.id}?limit=10&offset=0`)
           .then(response => {
             this.reviews = response.data;
           })

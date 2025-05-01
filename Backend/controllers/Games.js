@@ -80,10 +80,11 @@ export const ShowXGames = (req, res) => {
     const page = parseInt(req.query.page, 10) || 1;
     const sort = req.query.sort || 'id';
     const order = req.query.order || 'ASC';
+    const name = req.query.name || '';
 
     const offset = (page - 1) * x;
 
-    GameModel.getXGames(x, offset, sort, order, (err, results) => {
+    GameModel.getXGames(x, offset, sort, order, name, (err, results) => {
         if (err) {
             console.error('Erreur dans ShowXGames:', err);
             res.status(500).json({ error: err });
@@ -96,13 +97,14 @@ export const ShowXGames = (req, res) => {
 
 export const countGames = (req, res) => {
     console.log("Appel de countGames");
-    GameModel.getNbGames((err, result) => {
+    const name = req.query.name || '';
+    GameModel.getNbGames(name, (err, result) => {
         if (err) {
             console.error('Erreur dans countGames:', err);
             res.status(500).json({ error: err });
         } else {
             console.log('Nombre de jeux récupéré avec succès dans countGames');
-            res.status(200).json(result);
+            res.status(200).json({ total: result });
         }
     });
 };
