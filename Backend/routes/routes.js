@@ -2,6 +2,7 @@ import express from 'express';
 import * as GameController from '../controllers/Games.js';
 import * as UserController from '../controllers/Users.js';
 import * as ReviewController from '../controllers/Reviews.js';
+import * as OffersController from '../controllers/Offers.js';
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.put('/games/:id', GameController.modifyGame);
 router.delete('/games/:id', GameController.removeGame);
 router.get('/gamesLimited', GameController.ShowXGames);
 router.get('/gamesCount', GameController.countGames);
+router.get('/gamename/:Id', GameController.showGameName);
 
 // Routes pour les informations relationnelles d'un jeu
 router.get('/games/:id/categories', GameController.showCategoriesByGameId);
@@ -37,5 +39,13 @@ router.put('/updateReview/:Id', ReviewController.updateReview);
 router.delete('/deleteReview/:id', ReviewController.deleteReview);
 router.get('/Average/:gameId', ReviewController.getAverageRatingByGameId);
 router.get('/review/:ID', ReviewController.getReviewById);
+
+// Routes pour les offres d'occasion
+router.get('/offers/:id', OffersController.getOfferById);
+router.post('/offers', OffersController.addOffer);
+router.put('/offers/:id', OffersController.updateOffer);
+router.delete('/offers/:id', OffersController.deleteOffer);
+router.get('/offersLimited', OffersController.ShowXOffers);
+router.get('/offersCount', OffersController.getCountOffers);
 
 export default router;

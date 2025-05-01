@@ -58,6 +58,9 @@ export default {
 border: .7px solid #444;
 border-radius: 10px;
 padding: 1rem;
+width: 250px;
+min-width: 250px;
+flex-shrink: 0;
 }
 
 h3 {
@@ -73,6 +76,12 @@ margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.author strong {
+  max-height: 1rem;
+  max-width: 60%;
+  overflow: scroll;
 }
 
 .author img {

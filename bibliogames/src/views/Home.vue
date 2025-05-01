@@ -9,7 +9,7 @@
       </div>
     </section>
     <div class="hero-img">
-        <img loading="lazy" src="@/assets/HomeImage.png" alt="Home Image" />
+        <img loading="lazy" src="@/assets/HomeImage.webp" alt="Home Image" />
     </div>
 
     <section class="reviews text">
@@ -43,7 +43,7 @@ export default {
           console.log("Fetching home reviews");
           axios.get(`${process.env.VUE_APP_BACKEND_URL}/latestReviews`, {
             params: {
-              limit: 6
+              limit: 10
             }
           })
           .then(res => {
@@ -155,8 +155,10 @@ export default {
     }
 
     .quotes {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    display: flex;
+    flex-direction: row;
     gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
     }
 </style>

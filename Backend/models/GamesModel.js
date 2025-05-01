@@ -248,3 +248,17 @@ export const getExpansionsByGameId = (id, result) => {
         }
     );
 };
+
+export const getGameName = (id, result) => {
+    db.query(
+        "SELECT Name FROM Game WHERE ID = ?;", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results[0]);
+            }
+        }
+    );
+};

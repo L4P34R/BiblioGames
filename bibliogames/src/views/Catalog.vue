@@ -239,15 +239,14 @@ export default {
 }
 
 .page-input {
-  width: 6rem;
-  padding: 0.4rem;
+  width: 10rem;
+  padding: 0.3rem;
   border: 1px solid #949494;
   border-radius: 5px;
   background-color: #303030;
   color: white;
   text-align: center;
-  font-size: 1rem;
-  flex: 1;
+  font-size: 0.9rem; /* Réduit la taille de la police */
 }
 
 .page-input::placeholder {

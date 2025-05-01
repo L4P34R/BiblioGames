@@ -164,3 +164,13 @@ export const showExpansionsByGameId = (req, res) => {
         else res.status(200).json(results);
     });
 };
+
+export const showGameName = (req, res) => {
+    GameModel.getGameName(req.params.Id, (err, result) => {
+        if (err) res.status(500).json({ error: err });
+        else {
+            res.status(200).json(result);
+
+        }
+    });
+};

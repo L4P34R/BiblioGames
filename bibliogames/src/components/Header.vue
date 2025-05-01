@@ -1,12 +1,12 @@
 <template>
-  <header :class="{ 'hidden': isHidden }">
+  <header>
     <img load="'lazy'" src="../assets/BiblioGamesLogo.png" alt="Logo" />
     <div class="header-right">
         <nav>
         <ul>
             <li><router-link to="/">Home</router-link></li>
             <li><router-link to="/catalog">Catalog</router-link></li>
-            <li><router-link to="/Reviews">Reviews</router-link></li>
+            <li><router-link to="/usedGames">Used Games</router-link></li>
             <li><router-link to="/about">About</router-link></li>
             <li><a @click="openCart">Cart</a></li>
         </ul>
