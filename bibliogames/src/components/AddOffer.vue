@@ -1,6 +1,9 @@
 <template>
   <form class="offer-form" @submit.prevent="submitOffer">
-    <input v-model="offer.Name" type="text" placeholder="Game Name" required />
+    <input v-model="Name" type="text" placeholder="Game Name" list="game-names" required />
+    <datalist id="game-names">
+      <option v-for="name in filteredNames" :key="name" :value="name" />
+    </datalist>
     <input v-model="offer.Price" type="number" placeholder="Price (€)" required />
     <select v-model="offer.Damage" required>
       <option disabled value="">Condition</option>
@@ -16,31 +19,101 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   data() {
     return {
+      Names: [],
+      Damage: '',
+      Name: '',
       offer: {
-        Name: '',
+        UserID: null,
+        GameID: null,
         Price: '',
-        Damage: '',
-        About: ''
+        Damage: null,
+        About: '',
+        Date: new Date().toISOString().slice(0, 19).replace('T', ' ')
       }
     };
+  },
+  computed: {
+    filteredNames() {
+      const input = this.Name.toLowerCase();
+      return this.Names
+        .filter(name => typeof name === 'string')
+        .filter(name => name.toLowerCase().includes(input));
+    }
   },
   methods: {
     async submitOffer() {
       try {
+        let damage = null;
+        if (this.offer.Damage === 'New') {
+          damage = 0;
+        } else if (this.offer.Damage === 'Good') {
+          damage = 1;
+        } else if (this.offer.Damage === 'Used') {
+          damage = 2;
+        } else if (this.offer.Damage === 'Damaged') {
+          damage = 3;
+        }
+        this.offer.Damage = damage;
+        try {
+          const response = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/gamesByName/${this.Name}`);
+          this.offer.GameID = response.data.ID;
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            // Crée le jeu s'il n'existe pas
+            const createResponse = await axios.post(`${process.env.VUE_APP_BACKEND_URL}/games/${ this.Name }`);
+            this.offer.GameID = createResponse.data.ID;
+          } else {
+            throw error;
+          }
+        }
+        try {
+          const userResponse = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/User`, {
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+          });
+          this.offer.UserID = userResponse.data.ID;
+        } catch (error) {
+          const status = error.response?.status;
+          const expired = error.response?.data?.expired;
+
+          if ((status === 403) || (status === 401 && expired)) {
+            alert('Votre session a expiré. Veuillez vous reconnecter.');
+            localStorage.removeItem('token');
+            window.location.reload();
+            return;
+          } else {
+            throw error;
+          }
+        }
         await axios.post(`${process.env.VUE_APP_BACKEND_URL}/offers`, this.offer);
         this.$emit('offer-added');
         this.offer = {
+          UserID: null,
+          GameID: null,
           Name: '',
           Price: '',
-          Damage: '',
-          About: ''
+          Damage: null,
+          About: '',
+          Date: new Date().toISOString().slice(0, 19).replace('T', ' ')
         };
       } catch (err) {
         console.error('Erreur lors de l’ajout de l’offre :', err);
       }
+    }
+  },
+  async mounted() {
+    try {
+      const response = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/gameNames`);
+      for (const game of response.data) {
+        this.Names.push(game.Name);
+      }
+    } catch (err) {
+      console.error('Erreur lors de la récupération des noms de jeux :', err);
     }
   }
 }

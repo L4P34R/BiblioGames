@@ -2,12 +2,7 @@
   <div>
     <h1>Game Offers</h1>
     <button @click="addFormVisible = !addFormVisible">Add Offer</button>
-    <div v-if="addFormVisible" class="offer-form">
-      <input type="text" v-model="newOffer.title" placeholder="Title" />
-      <input type="text" v-model="newOffer.price" placeholder="Price" />
-      <textarea v-model="newOffer.description" placeholder="Description"></textarea>
-      <button @click="submitOffer">Submit Offer</button>
-    </div>
+    <AddOffer v-if="addFormVisible" class="offer-form"/>
     <ul>
       <GameOffer
         v-for="offer in this.offers[this.page - 1]?.data || []"
@@ -22,10 +17,12 @@
 <script>
 import axios from 'axios';
 import GameOffer from '@/components/GameOffer.vue';
+import AddOffer from '@/components/AddOffer.vue';
 
 export default {
   components: {
     GameOffer,
+    AddOffer,
   },
   data() {
     return {

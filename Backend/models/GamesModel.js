@@ -19,7 +19,7 @@ export const getGameById = (id, result)=>{
             console.log(err);
             result(err, null);
         }else{
-            result(null, results[0]);
+            result(null, results);
         }
     });
 }
@@ -252,6 +252,35 @@ export const getExpansionsByGameId = (id, result) => {
 export const getGameName = (id, result) => {
     db.query(
         "SELECT Name FROM Game WHERE ID = ?;", [id],
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results[0]);
+            }
+        }
+    );
+};
+
+export const getAllGamesNames = (result) => {
+    db.query(
+        "SELECT Name FROM Game;",
+        (err, results) => {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, results);
+            }
+        }
+    );
+}
+
+export const getGameByName = (name, result) => {
+    console.log("Appel de getGameByName avec le nom:", name);
+    db.query(
+        "SELECT ID FROM Game WHERE LOWER(Name) = LOWER(?)", [name],
         (err, results) => {
             if (err) {
                 console.log(err);

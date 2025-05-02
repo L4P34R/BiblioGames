@@ -113,7 +113,7 @@ export default {
                 },
             }
             );
-            this.totalGames = parseInt(response.data.total, 10); // Utilisation correcte de parseInt avec la base 10
+            this.totalGames = parseInt(response.data.total); // Utilisation correcte de parseInt avec la base 10
             this.maxPage = Math.ceil(this.totalGames / this.numberOfGames); // Calcul du nombre total de pages
             console.log(`Total games: ${this.totalGames}, Max pages: ${this.maxPage}`);
         } catch (error) {
@@ -158,7 +158,6 @@ export default {
         this.getNbGames();
         this.games = JSON.parse(localStorage.getItem('games')) || [];
         this.getXGames();
-        console.log(`http://localhost:5001`);
     },
 };
 </script>

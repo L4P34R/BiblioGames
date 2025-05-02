@@ -2,7 +2,11 @@ import * as OffersModel from '../models/OffersModel.js';
 
 export const addOffer = (req, res) => {
   try {
-    const { GameID, UserID, Price, Damage, About } = req.body;
+    const GameID = parseInt(req.body.GameID);
+    const UserID = parseInt(req.body.UserID);
+    const Price = parseFloat(req.body.Price);
+    const Damage = parseInt(req.body.Damage);
+    const About = req.body.About;
     OffersModel.insertOffer(GameID, UserID, Price, Damage, About, (err, result) => {
       if (err) return res.status(500).json({ error: 'Failed to insert offer', detail: err });
       res.status(201).json({ message: 'Offer added', id: result.insertId });

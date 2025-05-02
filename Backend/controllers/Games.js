@@ -174,3 +174,35 @@ export const showGameName = (req, res) => {
         }
     });
 };
+
+export const showAllGamesNames = (req, res) => {
+    GameModel.getAllGamesNames((err, results) => {
+        console.log("Appel de showAllGamesNames", results);
+        if (err) {
+            console.error('Erreur dans showAllGamesNames:', err);
+            res.status(500).json({ error: err });
+        } else if (!results) {
+            console.log('Aucun jeu trouvé dans showAllGamesNames');
+            res.status(404).json({ error: 'No games found' });
+        } else {
+            console.log('Jeux récupérés avec succès dans showAllGamesNames');
+            res.status(200).json(results);
+        }
+    });
+};
+
+export const showGameByName = (req, res) => {
+    const name = req.params.name;
+    GameModel.getGameByName(name, (err, results) => {
+        if (err) {
+            console.error('Erreur dans showGameByName:', err);
+            res.status(500).json({ error: err });
+        } else if (!results || (Array.isArray(results) && results.length === 0)) {
+            console.log('Jeu non trouvé dans showGameByName');
+            res.status(404).json({ error: 'Game not found' });
+        } else {
+            console.log('Jeu récupéré avec succès dans showGameByName');
+            res.status(200).json(results);
+        }
+    });
+};

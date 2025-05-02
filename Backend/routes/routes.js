@@ -15,6 +15,8 @@ router.delete('/games/:id', GameController.removeGame);
 router.get('/gamesLimited', GameController.ShowXGames);
 router.get('/gamesCount', GameController.countGames);
 router.get('/gamename/:Id', GameController.showGameName);
+router.get('/gameNames', GameController.showAllGamesNames);
+router.get('/gamesByName/:name', GameController.showGameByName);
 
 // Routes pour les informations relationnelles d'un jeu
 router.get('/games/:id/categories', GameController.showCategoriesByGameId);
@@ -30,6 +32,7 @@ router.get('/games/:id/expansions', GameController.showExpansionsByGameId);
 router.post('/UserRegister', UserController.registerUser);
 router.post('/Login', UserController.loginUser);
 router.get('/Username/:Id', UserController.fetchUsernameById);
+router.get('/User', UserController.fetchUserBytoken);
 
 // Routes pour les avis
 router.get('/latestReviews', ReviewController.getLatestReviews);

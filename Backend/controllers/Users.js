@@ -91,3 +91,23 @@ export const fetchUsernameById = (req, res) => {
         }
     });
 };
+
+export const fetchUserBytoken = (req, res) => {
+    console.log("Fetching User by token");
+    const token = req.headers['authorization'];
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).json({ error: 'Token expiré', expired: true });
+            } else {
+                return res.status(403).json({ error: 'Token invalide' });
+            }
+        }
+        // suite du traitement : récupération de l'utilisateur...
+        if (err) {
+            console.error("Erreur dans fetchUserBytoken:", err);
+            return res.status(401).json({ error: "Token invalide" });
+        }
+        res.status(200).json({ id: decoded.id});
+    });
+};
