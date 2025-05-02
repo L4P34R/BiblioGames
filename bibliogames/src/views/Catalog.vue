@@ -74,7 +74,7 @@ export default {
         order: 'DESC',
         maxPage: 1,
         goToPage: null, // Page saisie par l'utilisateur
-        name: '',
+        name: null,
         searchInput: '',
     };
   },
@@ -109,7 +109,7 @@ export default {
         try {
             const response = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/gamesCount`, {
                 params: {
-                    name: this.name,
+                    name: this.name || '',
                 },
             }
             );
