@@ -116,12 +116,14 @@ export const getXGames = (x, offset, sort, order, name, result) => {
 };
 
 export const getNbGames = (name, result) => {
+    console.log("Appel de getNbGames avec le nom:", name);
     // Requête SQL pour compter le nombre total de jeux
-    db.query("SELECT COUNT(1) AS total FROM newgames WHERE newgames.Name LIKE ?", [`%${name}%`], (err, results) => {
+    db.query("SELECT COUNT(1) AS total FROM NewGames WHERE newgames.Name LIKE ?", [`%${name}%`], (err, results) => {
         if (err) {
             console.error("Erreur dans getNbGames:", err);
             result(err, null);
         } else {
+            console.log("Résultats de getNbGames:", results);
             // Retourner le total des jeux
             result(null, results[0].total);
         }
