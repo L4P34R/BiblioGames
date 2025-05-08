@@ -40,14 +40,12 @@ export default {
     },
     methods:{
         getReviews(){
-          console.log("Fetching home reviews");
           axios.get(`${process.env.VUE_APP_BACKEND_URL}/latestReviews`, {
             params: {
               limit: 10
             }
           })
           .then(res => {
-            console.log("Reviews fetched successfully");
             this.reviews = res.data;
           })
         }

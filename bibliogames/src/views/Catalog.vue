@@ -96,13 +96,10 @@ export default {
                     data: response.data,
                 };
                 this.games.push(fetchedGames);
-                console.log(`Page ${this.Page} fetched successfully.`);
                 this.storeGames();
             } catch (error) {
                 console.error(`Error fetching page ${this.Page}:`, error);
             }
-        } else {
-            console.log(`Page ${this.Page} already fetched.`);
         }
     },
     async getNbGames() {
@@ -115,14 +112,12 @@ export default {
             );
             this.totalGames = parseInt(response.data.total); // Utilisation correcte de parseInt avec la base 10
             this.maxPage = Math.ceil(this.totalGames / this.numberOfGames); // Calcul du nombre total de pages
-            console.log(`Total games: ${this.totalGames}, Max pages: ${this.maxPage}`);
         } catch (error) {
             console.error('Error fetching total number of games:', error);
         }
     },
     async storeGames(){
         localStorage.setItem('games', JSON.stringify(this.games));
-        console.log('Games stored in localStorage:', this.games);
     },
     nextPage() {
         this.Page++;
@@ -146,7 +141,6 @@ export default {
     },
     onSearch() {
       this.name = this.searchInput;
-      console.log("Searching for:", this.name);
       this.Page = 1;
       this.games = [];
       this.storeGames();

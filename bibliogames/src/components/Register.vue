@@ -65,11 +65,9 @@ import axios from 'axios';
                 email: this.email,
                 password: this.password,
             };
-
-            console.log('Registering user:', userData);
             axios.post(`${process.env.VUE_APP_BACKEND_URL}/UserRegister`, userData)
             .then(res => {
-                console.log('Utilisateur enregistré');
+                this.alert('Utilisateur enregistré');
                 this.lastName = '';
                 this.firstName = '';
                 this.userName = '';

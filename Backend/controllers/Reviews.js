@@ -37,7 +37,7 @@ export const addReview = (req, res) => {
     console.log("Appel de addReview");
     const data = {
         GameId: req.body.reviewData.GameId,
-        UserId: jwt.verify(req.body.reviewData.Token, SECRET_KEY).id,
+        UserId: req.body.reviewData.UserId,
         Note: req.body.reviewData.Note,
         Content: req.body.reviewData.Content
     };

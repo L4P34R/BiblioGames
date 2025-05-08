@@ -29,28 +29,47 @@ export default {
     return {
       rating: 1,
       comment: '',
-      userId : 0,
-      token: localStorage.getItem('token'),
     };
   },
   methods: {
-        postReview() {
-            const reviewData = {
-                GameId: this.gameID,
-                Note: this.rating,
-                Content: this.comment,
-                Token: this.token,
-            };
-            axios.post(`${process.env.VUE_APP_BACKEND_URL}/Review`, {reviewData})
-            .then(response => {
-                console.log('Review posted successfully:', response.data);
-                alert('Thank you for your review!');
-            })
-            .catch(error => {
-                console.error('Error posting review:', error);
-            });
+    async postReview() {
+      try {
+        let reviewData = null;
+        try {
+          const userResponse = await axios.get(`${process.env.VUE_APP_BACKEND_URL}/User`, {
+            headers: {
+              Authorization: localStorage.getItem('token')
+            }
+          });
+
+          reviewData = {
+            GameId: this.gameID,
+            Note: this.rating,
+            Content: this.comment,
+            UserId: userResponse.data.id,
+          };
+        } catch (error) {
+          const status = error.response?.status;
+          const expired = error.response?.data?.expired;
+
+          if ((status === 403) || (status === 401 && expired)) {
+            alert('Votre session a expiré. Veuillez vous reconnecter.');
+            localStorage.removeItem('token');
+            window.location.reload();
+            return;
+          } else {
+            throw error;
+          }
         }
-  },
+
+        await axios.post(`${process.env.VUE_APP_BACKEND_URL}/Review`, { reviewData });
+        alert('Thank you for your review!');
+        window.location.reload();
+      } catch (error) {
+        console.error('Error posting review:', error);
+      }
+    }
+},
   mounted() {
   }
 };

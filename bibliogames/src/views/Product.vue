@@ -120,7 +120,6 @@ import AddReview from '../components/AddReview.vue';
     },
     mounted() {
         this.id = this.$route.params.id;
-        console.log('ID récupéré dans l’URL:', this.id);
         window.addEventListener("scroll", this.handleScroll);
         this.game = axios.get(`${process.env.VUE_APP_BACKEND_URL}/games/${this.id}`)
           .then(response => {

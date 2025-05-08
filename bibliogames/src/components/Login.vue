@@ -57,11 +57,10 @@ import axios from 'axios';
                 password: this.password
             })
             .then(res => {
-                console.log('Login successful', res.data);
+                this.alert('Login successful');
                 const token = res.data;
                 localStorage.setItem('token', token);
                 this.$emit('user-connected', token);
-                this.alert = '';
                 this.$emit('closeLogin');
             })
             .catch(err => {

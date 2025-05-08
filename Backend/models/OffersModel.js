@@ -30,7 +30,10 @@ export const insertOffer = (gameID, userID, price, damage, about, callback) => {
       VALUES (?, ?, ?, ?, ?, NOW())
     `;
     db.query(sql, [gameID, userID, price, damage, about], (err, results) => {
-      if (err) return callback(new Error('Failed to insert offer: ' + err.message));
+      if (err) {
+        console.error('Erreur SQL insertOffer:', err); // <--- AJOUTE ÇA
+        return callback(new Error('Failed to insert offer: ' + err.message));
+      }
       callback(null, results);
     });
   } catch (err) {

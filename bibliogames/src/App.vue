@@ -87,7 +87,6 @@ export default {
       };
 
       localStorage.setItem('cart', JSON.stringify(cart));
-      console.log('Cart stored in localStorage:', cart);
     },
     addToCart(game) {
       const existingItem = this.cart.cartItems.find(
@@ -155,7 +154,6 @@ export default {
     },
     getConnectionInfo(token) {
       this.token = token;
-      console.log('Token:', this.token);
     },
     logout() {
       localStorage.removeItem('token');

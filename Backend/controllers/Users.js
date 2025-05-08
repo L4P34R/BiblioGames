@@ -1,6 +1,5 @@
 import * as UserModel from "../models/UsersModel.js";
 import jwt from 'jsonwebtoken';
-const SECRET_KEY = 'bibliogames_secret_key';
 
 
 export const registerUser = (req, res) => {
@@ -38,7 +37,7 @@ export const loginUser = (req, res) => {
 
                     else if (user) {
                         console.log('Utilisateur connecté avec email dans loginUser');
-                        const token = jwt.sign({ id: user[0].ID, username: user[0].UserName }, SECRET_KEY, { expiresIn: '2h' });
+                        const token = jwt.sign({ id: user[0].ID, username: user[0].UserName }, process.env.JWT_SECRET, { expiresIn: '2h' });
                         res.status(200).json(token);
                     }
                     else {
@@ -64,7 +63,7 @@ export const loginUser = (req, res) => {
 
                     else if (user) {
                         console.log('Utilisateur connecté avec username dans loginUser');
-                        const token = jwt.sign({ id: user[0].id, username: user[0].username }, SECRET_KEY, { expiresIn: '2h' });
+                        const token = jwt.sign({ id: user[0].id, username: user[0].username }, process.env.JWT_SECRET, { expiresIn: '2h' });
                         res.status(200).json(token);
                     }
                     else {

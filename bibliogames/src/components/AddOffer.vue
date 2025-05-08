@@ -76,7 +76,7 @@ export default {
               Authorization: localStorage.getItem('token')
             }
           });
-          this.offer.UserID = userResponse.data.ID;
+          this.offer.UserID = userResponse.data.id;
         } catch (error) {
           const status = error.response?.status;
           const expired = error.response?.data?.expired;
@@ -101,6 +101,7 @@ export default {
           About: '',
           Date: new Date().toISOString().slice(0, 19).replace('T', ' ')
         };
+        window.location.reload();
       } catch (err) {
         console.error('Erreur lors de l’ajout de l’offre :', err);
       }
