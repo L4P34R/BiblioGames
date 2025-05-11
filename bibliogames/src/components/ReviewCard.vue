@@ -81,7 +81,7 @@ margin-bottom: 0.5rem;
 .author strong {
   max-height: 1rem;
   max-width: 60%;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .author img {
@@ -95,7 +95,7 @@ margin-right: 10px;
     opacity: .7;
     font-size: .8rem;
     max-height: 60px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .half-star {

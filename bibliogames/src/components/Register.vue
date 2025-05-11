@@ -3,7 +3,7 @@
         <div class="auth-container">
             <button class="close-btn" @click="$emit('closeRegister')">×</button>
             <div class="auth-left">
-                <img src="@/assets/LogImage.png" alt="Auth image" />
+                <img src="@/assets/LogImage.webp" alt="Auth image" />
             </div>
             <div class="auth-right">
                 <h1>Create an account</h1>
@@ -58,6 +58,13 @@ import axios from 'axios';
                 return;
             }
 
+            const atIndex = this.email.indexOf('@');
+            const dotIndex = this.email.lastIndexOf('.');
+            if (atIndex === -1 || dotIndex === -1 || dotIndex < atIndex) {
+                this.alert = 'Make sure you use a valid email';
+                return;
+            }
+            
             const userData = {
                 firstName: this.firstName,
                 lastName: this.lastName,

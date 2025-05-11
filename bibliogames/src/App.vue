@@ -164,6 +164,7 @@ export default {
       this.cart.couponApplied = false;
       this.storeCart();
       alert('Logged out successfully.');
+      window.location.reload();
     },
   },
   mounted() {
@@ -249,7 +250,7 @@ export default {
     justify-content: center;
     background-color: #242424;
     border-radius: 10px;
-    overflow: scroll;
+    overflow: auto;
   }
   
   .auth-right h1 {
@@ -358,6 +359,28 @@ export default {
     min-height: 100%;
     object-fit: cover;
   }
+
+/* Scrollbar globale */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Fond de la scrollbar */
+::-webkit-scrollbar-track {
+  background: #1e1e1e; /* shark.950 */
+}
+
+/* La "barre" elle-même */
+::-webkit-scrollbar-thumb {
+  background-color: #6d6d6d; /* shark.500 */
+  border-radius: 4px;
+}
+
+/* Hover sur la barre */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #888888; /* shark.400 */
+}
 </style>
 
 <style scoped>

@@ -3,6 +3,7 @@ import HomeView from '@/views/Home.vue'
 import CatalogView from '@/views/Catalog.vue'
 import Product from '@/views/Product.vue'
 import GameOffers from '@/views/GameOffers.vue'
+import MyAccount from '@/views/MyAccount.vue'
 
 const routes = [
   {
@@ -30,6 +31,12 @@ const routes = [
     path:'/product/:id',
     name: 'Product Info',
     component: Product
+  },
+
+  {
+    path:'/myAccount',
+    name: 'MyAccount',
+    component: MyAccount
   }
 ]
 

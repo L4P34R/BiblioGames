@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img load="'lazy'" src="../assets/BiblioGamesLogo.png" alt="Logo" />
+    <img load="'lazy'" src="@/assets/BiblioGamesLogo.webp" alt="Logo" />
     <div class="header-right">
         <nav>
         <ul>
@@ -14,7 +14,7 @@
         <ul id="profilinterface">
         <li v-if="token == null" id = "connexion"><a href="#" @click="this.$emit('openLogin')">Login</a></li>
         <li v-if="token == null" id = "inscription"><a href="#" @click="this.$emit('openRegister')">Sign Up</a></li>
-        <li v-if="token != null" id = "moncompte"><a href="#">My Account</a></li>
+        <li v-if="token != null" id = "moncompte"><router-link to="/myAccount">My Account</router-link></li>
         <li v-if="token != null" id = "deconnexion"><a href="#" @click="this.$emit('logout')">Logout</a></li>
         </ul>
     </div>

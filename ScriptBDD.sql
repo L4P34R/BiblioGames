@@ -274,6 +274,34 @@ BEGIN
 END;
 //
 
+DELIMITER //
+CREATE TRIGGER `IsUserNameAvaliable` BEFORE UPDATE ON `User_`
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM User_
+        WHERE UserName = NEW.UserName AND ID != OLD.ID
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Username already exists';
+    END IF;
+END;
+//
+
+DELIMITER //
+CREATE TRIGGER `IsEmailAvaliable` BEFORE UPDATE ON `User_`
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM User_
+        WHERE email = NEW.email AND ID != OLD.ID
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Email already exists';
+    END IF;
+END;
+//
+
 
 CREATE TRIGGER `trg_update_game_rating`
 AFTER INSERT ON `Rating`

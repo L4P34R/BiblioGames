@@ -9,7 +9,7 @@
       </div>
     </section>
     <div class="hero-img">
-        <img loading="lazy" src="@/assets/HomeImage.webp" alt="Home Image" />
+      <img loading="lazy" src="@/assets/HomeImage.webp" alt="Home Image" />
     </div>
 
     <section class="reviews text">
@@ -130,27 +130,35 @@ export default {
         opacity: .8;
     }
 
-    .hero-img {
-    background-color: #e5e5e5;
+  .hero-img {
+    position: relative;
+    width: 100%;
     height: 30vw;
-    margin: 0;
-    width: 100vw;
-    margin-top: 1rem;
     overflow: hidden;
-    }
+    background-color: #e5e5e5;
+  }
 
-    .reviews {
+  .hero-img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .reviews {
     padding: 2rem 0;
-    }
+  }
 
-    .reviews h2 {
+  .reviews h2 {
     font-size: 1.8rem;
-    }
+  }
 
-    .reviews p {
+  .reviews p {
     color: #ccc;
     margin-bottom: 1.5rem;
-    }
+  }
 
     .quotes {
     display: flex;

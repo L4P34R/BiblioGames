@@ -33,6 +33,12 @@ router.post('/UserRegister', UserController.registerUser);
 router.post('/Login', UserController.loginUser);
 router.get('/Username/:Id', UserController.fetchUsernameById);
 router.get('/User', UserController.fetchUserBytoken);
+router.get('/userInfo', UserController.fetchUserInfo);
+router.put('/updateProfile', UserController.updateProfile);
+router.put('/updateEmail', UserController.updateEmail);
+router.put('/updatePassword', UserController.updatePassword);
+router.get('/users', UserController.getAllUsers);
+router.put('/user', UserController.updateUser);
 
 // Routes pour les avis
 router.get('/latestReviews', ReviewController.getLatestReviews);

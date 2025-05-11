@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <img class="logo" src="@/assets/BiblioGamesLogo.png" alt="Logo" />
+    <img class="logo" src="@/assets/BiblioGamesLogo.webp" alt="Logo" />
     <div class="socials">
       <a href="#">✕</a>
       <a href="#">📷</a>

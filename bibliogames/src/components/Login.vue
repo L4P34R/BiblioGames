@@ -3,13 +3,13 @@
         <div class="auth-container">
             <button class="close-btn" @click="$emit('closeLogin')">×</button>
             <div class="auth-left">
-                <img src="@/assets/LogImage.png" alt="Auth image" />
+                <img src="@/assets/LogImage.webp" alt="Auth image" />
             </div>
             <div class="auth-right">
                 <h1>Log in to your account</h1>
                 <p>You don't have an account? <a href="#" @click="toRegister()">Register</a></p>
         
-                <input type="email" placeholder="Email or user name" v-model="this.username" />
+                <input type="text" placeholder="Email or user name" v-model="this.username" />
                 <input type="password" placeholder="Enter your password" v-model="this.password" />
                               
                 <div v-if="alert" class="alert">{{ alert }}</div>
@@ -57,16 +57,18 @@ import axios from 'axios';
                 password: this.password
             })
             .then(res => {
-                this.alert('Login successful');
+                window.alert('Login successful');
                 const token = res.data;
                 localStorage.setItem('token', token);
                 this.$emit('user-connected', token);
                 this.$emit('closeLogin');
+                window.location.reload();
             })
             .catch(err => {
                 if (err.response && err.response.data && err.response.data.error) {
                     this.alert = err.response.data.error;
                 } else {
+                    console.error(err);
                     this.alert = 'Login failed.';
                 }
             });
