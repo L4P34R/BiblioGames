@@ -218,3 +218,15 @@ export const updateUser = (userId, data, result) => {
         }
     );
 };
+
+export const deleteUser = (userId, result) => {
+    db.query("DELETE FROM User_ WHERE ID = ?", [userId], (err, results) => {
+        if (err) {
+            console.log("Erreur dans deleteUser:", err);
+            result(err, null);
+        } else {
+            console.log("Utilisateur supprimé avec succès (ID:", userId, ")");
+            result(null, results);
+        }
+    });
+};

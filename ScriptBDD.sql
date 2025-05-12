@@ -167,7 +167,7 @@ CREATE TABLE `Rating` (
     KEY `GameID` (`GameID`),
     KEY `UserID` (`UserID`),
     CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`GameID`) REFERENCES `Game` (`ID`),
-    CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User_` (`ID`)
+    CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User_` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE `GameOffer` (
@@ -182,7 +182,7 @@ CREATE TABLE `GameOffer` (
     UNIQUE KEY `OfferID` (`OfferID`),
     KEY `UserID` (`UserID`),
     CONSTRAINT `gameoffer_ibfk_1` FOREIGN KEY (`GameID`) REFERENCES `Game` (`ID`),
-    CONSTRAINT `gameoffer_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User_` (`ID`)
+    CONSTRAINT `gameoffer_ibfk_2` FOREIGN KEY (`UserID`) REFERENCES `User_` (`ID`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE `GameUpdates` (
@@ -421,4 +421,4 @@ FROM Rating r
 JOIN User_ u ON u.ID = UserID
 ORDER BY Date DESC;
 
-COMMIT; 
+COMMIT;

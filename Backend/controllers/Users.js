@@ -312,3 +312,50 @@ export const updateUser = (req, res) => {
         });
     });
 };
+
+
+
+export const deleteUser = (req, res) => {
+    console.log("Suppression de l'utilisateur...", req.params.id);
+    const token = req.headers['authorization'];
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token manquant' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).json({ error: 'Token expiré', expired: true });
+            } else {
+                return res.status(403).json({ error: 'Token invalide' });
+            }
+        }
+
+        UserModel.getUserById(decoded.id, (err, user) => {
+            if (err) {
+                console.error("Erreur lors de la vérification du niveau d'admin:", err);
+                return res.status(500).json({ error: 'Erreur serveur' });
+            }
+
+            if (!user || user.Admin == 0) {
+                return res.status(403).json({ error: 'Accès refusé : privilèges insuffisants' });
+            }
+
+            const userIdToDelete = req.params.id;
+
+            if (!userIdToDelete) {
+                return res.status(400).json({ error: 'ID utilisateur à supprimer manquant' });
+            }
+
+            UserModel.deleteUser(userIdToDelete, (err, result) => {
+                if (err) {
+                    console.error("Erreur lors de la suppression de l'utilisateur:", err);
+                    return res.status(500).json({ error: 'Erreur serveur' });
+                }
+
+                return res.status(200).json({ message: 'Utilisateur supprimé avec succès' });
+            });
+        });
+    });
+};

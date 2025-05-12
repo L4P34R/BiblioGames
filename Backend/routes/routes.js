@@ -39,6 +39,7 @@ router.put('/updateEmail', UserController.updateEmail);
 router.put('/updatePassword', UserController.updatePassword);
 router.get('/users', UserController.getAllUsers);
 router.put('/user', UserController.updateUser);
+router.delete('/deleteUser/:id', UserController.deleteUser);
 
 // Routes pour les avis
 router.get('/latestReviews', ReviewController.getLatestReviews);

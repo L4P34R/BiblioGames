@@ -15,6 +15,7 @@
                     <div class="field"><span class="label">Account Created</span><input class="value" type="text" v-model="editedUsers[index].AccountCreationDate" /></div>
                     <div class="field"><span class="label">Admin</span><input class="value" v-model="editedUsers[index].Admin" :disabled="userData.Admin !== 2" /></div>
                     <button class="update-btn" @click="updateUser(index)">Update</button>
+                    <button class="delete-btn" @click="deleteUser(index)">🗑️</button>
                 </div>
             </div>
         </div>
@@ -54,7 +55,7 @@ export default {
             } catch (error) {
                 console.error("Erreur axios updateEmail:", error);
                 if (error.response && error.response.status === 401) {
-                    window.alert("Session expirée");
+                    window.alert("Session expired");
                     localStorage.removeItem("token");
                     this.$router.push('/');
                 }
@@ -71,19 +72,47 @@ export default {
               },
             });
             console.log("Utilisateur mis à jour :", response.data);
-            window.alert("Utilisateur mis à jour !");
+            window.alert("User successfully updated!");
           } catch (error) {
             console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
             if (error.response && error.response.status === 403) {
-              window.alert("Vous n'avez pas les droits pour effectuer cette modification.");
+              window.alert("You do not have permission to perform this update.");
               window.location.reload();
             } else if (error.response && error.response.status === 401) {
-              window.alert("Session expirée");
+              window.alert("Session expired");
               localStorage.removeItem("token");
               window.location.reload();
               this.$router.push('/');
             } else {
-              window.alert("Erreur lors de la mise à jour.");
+              window.alert("Error during update.");
+            }
+          }
+        },
+        async deleteUser(index) {
+          const userId = this.editedUsers[index].ID;
+          try {
+            if (this.editedUsers[index].Admin != 0) {
+              window.alert("You cannot delete an administrator.");
+              return;
+            }
+            const response = await axios.delete(`${process.env.VUE_APP_BACKEND_URL}/deleteUser/${userId}`, {
+              headers: {
+                authorization: localStorage.getItem('token'),
+              },
+            });
+            window.alert("User successfully deleted!");
+            this.fetchUsers(); // recharge la liste
+          } catch (error) {
+            console.error("Erreur lors de la suppression de l'utilisateur :", error);
+            if (error.response && error.response.status === 403) {
+              window.alert("You do not have permission to delete this user.");
+            } else if (error.response && error.response.status === 401) {
+              window.alert("Session expired");
+              localStorage.removeItem("token");
+              window.location.reload();
+              this.$router.push('/');
+            } else {
+              window.alert("Error during deletion.");
             }
           }
         }
@@ -184,5 +213,23 @@ h1{
 
 .update-btn:hover {
   background-color: #888888;
+}
+
+.delete-btn {
+  background-color: transparent;
+  color: #e57373;
+  border: 1px solid #e57373;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  height: fit-content;
+  align-self: center;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background-color: #e57373;
+  color: white;
 }
 </style>
