@@ -404,6 +404,9 @@ SELECT
 	Note,
     Review,
     User_.UserName
+    User_.Color
+    User_.FirstName
+    User_.LastName
 FROM Rating
 JOIN User_ ON User_.ID = UserID
 WHERE Review IS NOT NULL

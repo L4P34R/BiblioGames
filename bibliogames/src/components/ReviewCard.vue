@@ -1,7 +1,7 @@
 <template>
   <div class="quote-card" to="/catalog/{{ game.ID }}">
     <div class="author">
-        <img src="https://via.placeholder.com/40" alt="user" />
+        <ProfilePic :userData="review" class="pp" style="--circle-size: 5rem;"/>
         <div>
         <strong>{{review.UserName}}</strong>
         <div class="stars">
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import ProfilePic from '@/components/ProfilePic.vue';
 
 export default {
   props: {
@@ -44,6 +45,9 @@ export default {
       type: Object,
       required: true,
     }
+  },
+  components: {
+    ProfilePic,
   },
   data() {
       return {
@@ -76,6 +80,7 @@ margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
   gap: 1rem;
+  height: 6rem;
 }
 
 .author strong {
@@ -85,8 +90,8 @@ margin-bottom: 0.5rem;
 }
 
 .author img {
-width: 40px;
-height: 40px;
+width: 5rem;
+height: 5rem;
 border-radius: 50%;
 margin-right: 10px;
 }
