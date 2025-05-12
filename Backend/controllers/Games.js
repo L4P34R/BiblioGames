@@ -17,12 +17,13 @@ export const showAllGames = (req, res) => {
 };
 
 export const showGameById = (req, res) => {
-    console.log("Appel de showGameById");
-    GameModel.getGameById(req.params.id, (err, results) => {
+    const id = req.params.id;
+    console.log("Appel de showGameById", id);
+    GameModel.getGameById(id, (err, results) => {
         if (err) {
             console.error('Erreur dans showGameById:', err);
             res.status(500).json({ error: err });
-        } else if (results.length === 0) {
+        } else if (!results) {
             console.log('Jeu non trouvé dans showGameById');
             res.status(404).json({ error: 'Game not found' });
         } else {
