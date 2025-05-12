@@ -89,8 +89,8 @@ export default {
                 if (error.response && error.response.status === 401) {
                 window.alert("Session expirée");
                 localStorage.removeItem("token");
-                this.$router.push('/');
                 window.location.reload();
+                this.$router.push('/');
                 }
                 else console.error('Error fetching user data:', error);
             }

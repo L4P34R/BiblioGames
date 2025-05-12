@@ -80,6 +80,7 @@ export default {
             } else if (error.response && error.response.status === 401) {
               window.alert("Session expirée");
               localStorage.removeItem("token");
+              window.location.reload();
               this.$router.push('/');
             } else {
               window.alert("Erreur lors de la mise à jour.");
