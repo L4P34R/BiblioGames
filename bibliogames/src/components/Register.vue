@@ -74,7 +74,7 @@ import axios from 'axios';
             };
             axios.post(`${process.env.VUE_APP_BACKEND_URL}/UserRegister`, userData)
             .then(res => {
-                this.alert('Utilisateur enregistré');
+                this.alert= 'User registered successfully';
                 this.lastName = '';
                 this.firstName = '';
                 this.userName = '';
@@ -88,7 +88,7 @@ import axios from 'axios';
                 if (err.response && err.response.data && err.response.data.error) {
                 this.alert = err.response.data.error;
                 } else {
-                this.alert = "Une erreur est survenue.";
+                this.alert = "An error happened during registration";
                 }
             });;
         }
